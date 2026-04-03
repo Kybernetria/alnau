@@ -1,11 +1,6 @@
 ---
-import fs from 'node:fs';
-const configPath = new URL('../../site-config.json', import.meta.url);
-let siteName = 'Augusta Lykke Nau';
-try {
-  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  siteName = config.name || siteName;
-} catch(e) {}
+import config from '../../site-config.json';
+const siteName = config.name || 'Augusta Lykke Nau';
 ---
 
 <header id="navbar" class="nav-backdrop fixed top-0 left-0 w-full z-50" style="height: 56px;">

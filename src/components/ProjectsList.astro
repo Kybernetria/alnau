@@ -1,13 +1,7 @@
 ---
-import fs from 'node:fs';
-const configPath = new URL('../../site-config.json', import.meta.url);
-let projects: any[] = [];
-let socials = { github: '#' } as any;
-try {
-  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  projects = config.projects || [];
-  socials = config.socials || socials;
-} catch(e) {}
+import config from '../../site-config.json';
+const projects = config.projects || [];
+const socials = config.socials || { github: '#' };
 ---
 
 <section id="work" class="bg-base border-t border-stroke w-full" style="padding: 6rem 0;">

@@ -1,13 +1,12 @@
 ---
-import fs from 'node:fs';
-const configPath = new URL('../../site-config.json', import.meta.url);
-let siteData = {
+import config from '../../site-config.json';
+const defaultData = {
   name: 'Augusta Lykke Nau',
   tagline: 'Cybernetician. Engineer. Agentic Builder.',
   email: 'hello@alnau.com',
   socials: { github: '#', linkedin: '#', kybernetria: '#' }
-} as any;
-try { siteData = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch(e) {}
+};
+const siteData = { ...defaultData, ...config };
 const year = new Date().getFullYear();
 ---
 
