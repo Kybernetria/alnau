@@ -73,11 +73,11 @@
       const t = theme();
       const isLight = t === 'light';
 
-      // Subtract alpha rather than overlaying color to avoid muddy grey buildup
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.035)';
-      ctx.fillRect(0, 0, w, h);
+      // Use source-over fading with exact CSS background colors RGB values.
+      // This prevents muddy colors and alpha rounding bugs across browsers.
       ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = isLight ? 'rgba(224, 223, 218, 0.05)' : 'rgba(12, 12, 12, 0.05)';
+      ctx.fillRect(0, 0, w, h);
 
       const baseHue = 210 + Math.sin(frame * 0.002) * 55;
 
