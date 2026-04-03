@@ -1,0 +1,44 @@
+{
+  "name": "Augusta Lykke Nau",
+  "tagline": "Cybernetician. Engineer. Agentic Builder.",
+  "email": "hello@alnau.com",
+  "projects": [
+    {
+      "title": "Dynamic Systems Modeler",
+      "url": "https://github.com/Kybernetria/dynamic-systems",
+      "description": "A real-time visualization tool for coupled nonlinear differential equations.",
+      "domain": "CYBERNETICS",
+      "year": "2024",
+      "featured": true
+    },
+    {
+      "title": "Anthropo-Tech Survey",
+      "url": "https://github.com/Kybernetria/anthropo-tech",
+      "description": "Data collection and synthesis platform for ethnographic fieldwork.",
+      "domain": "ANTHROPOLOGY",
+      "year": "2023",
+      "featured": true
+    },
+    {
+      "title": "Protocol Zero",
+      "url": "https://github.com/Kybernetria/protocol-zero",
+      "description": "Minimalist peer-to-peer messaging protocol built in Go.",
+      "domain": "ENGINEERING",
+      "year": "2023",
+      "featured": true
+    },
+    {
+      "title": "Marxist Logic Engine",
+      "url": "https://github.com/Kybernetria/marxist-logic",
+      "description": "Computational analysis of contradictions in contemporary socioeconomic datasets.",
+      "domain": "RESEARCH",
+      "year": "2022",
+      "featured": true
+    }
+  ],
+  "socials": {
+    "github": "https://github.com/Kybernetria",
+    "linkedin": "https://linkedin.com/in/[YOUR_LINKEDIN_USERNAME]",
+    "kybernetria": "https://kybernetria.com"
+  }
+}

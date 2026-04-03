@@ -1,0 +1,71 @@
+---
+import AttractorCanvas from './AttractorCanvas.astro';
+
+const domainLabel = "CYBERNETICIAN · ENGINEER · AGENTIC BUILDER";
+const headlineLine1 = "Building systems";
+const headlineLine2 = "at the edge of";
+const headlineLine3 = "code and society.";
+const mask = (s: string) => s.split('').map(c => c === ' ' ? ' ' : '·').join('');
+---
+<section class="relative w-full bg-base border-b border-stroke overflow-hidden" style="height: 100dvh;">
+  <AttractorCanvas />
+
+  <div class="absolute inset-0 z-10 flex flex-col justify-center" style="padding-left: clamp(2rem, 8vw, 9rem); padding-right: clamp(2rem, 8vw, 9rem); pointer-events: none;">
+    
+    <div class="label mb-8 opacity-0" id="hero-domain" style="letter-spacing: 0.15em; font-size: 0.68rem;">
+      <!-- PLACEHOLDER: adjust domain labels to match owner's primary disciplines -->
+      {domainLabel}
+    </div>
+
+    <h1 class="serif-italic text-body flex flex-col items-start" style="font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1.08; letter-spacing: -0.02em; overflow-wrap: break-word; min-width: 0; margin-bottom: 2.5rem;" aria-label="Building systems at the edge of code and society.">
+      <!-- PLACEHOLDER: replace with owner's actual positioning statement -->
+      <span class="hero-line" data-text={headlineLine1}>{mask(headlineLine1)}</span>
+      <span class="hero-line" data-text={headlineLine2}>{mask(headlineLine2)}</span>
+      <span class="hero-line" data-text={headlineLine3}>{mask(headlineLine3)}</span>
+    </h1>
+
+    <p class="font-sans font-light text-subtle opacity-0" id="hero-subhead" style="font-size: 1.05rem; max-width: 44ch; line-height: 1.7; margin-bottom: 3rem;">
+      <!-- PLACEHOLDER: adjust availability and collaboration preferences -->
+      Available for engineering roles.<br/>
+      Open to research collaborations.
+    </p>
+
+    <div class="flex gap-4 opacity-0" id="hero-ctas" style="transform: translateY(10px); pointer-events: auto;">
+      <a href="mailto:hello@alnau.com" class="btn-primary">Get in touch</a>
+      <a href="/#work" class="btn-secondary">See my work ↓</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function resolveText(el: HTMLElement, delay = 0) {
+    const text = el.dataset.text || '';
+    const chars = text.split('');
+    let revealed = 0;
+    setTimeout(() => {
+      const interval = setInterval(() => {
+        el.textContent = chars.map((c, i) => {
+          if (c === ' ') return ' ';
+          return i <= revealed ? c : '·';
+        }).join('');
+        if (revealed >= chars.length) clearInterval(interval);
+        revealed++;
+      }, 25);
+    }, delay);
+  }
+
+  function init() {
+    const domain = document.getElementById('hero-domain');
+    if (domain) setTimeout(() => { domain.style.opacity = '1'; domain.style.transition = 'opacity 600ms ease'; }, 200);
+    const lines = document.querySelectorAll('.hero-line') as NodeListOf<HTMLElement>;
+    if (lines.length > 0) resolveText(lines[0], 400);
+    if (lines.length > 1) resolveText(lines[1], 700);
+    if (lines.length > 2) resolveText(lines[2], 1000);
+    const subhead = document.getElementById('hero-subhead');
+    if (subhead) setTimeout(() => { subhead.style.opacity = '1'; subhead.style.transition = 'opacity 600ms ease'; }, 1400);
+    const ctas = document.getElementById('hero-ctas');
+    if (ctas) setTimeout(() => { ctas.style.opacity = '1'; ctas.style.transform = 'translateY(0)'; ctas.style.transition = 'opacity 600ms ease, transform 600ms ease'; }, 1800);
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+</script>

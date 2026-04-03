@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  limit?: number;
+  variant?: 'default' | 'raised';
+  showHeader?: boolean;
+  showFooter?: boolean;
+}
+
+const { limit = 0, variant = 'default', showHeader = true, showFooter = true } = Astro.props;
+const isRaised = variant === 'raised';
+
+let allArticles = await getCollection('articles', ({ data }) => data.draft !== true);
+allArticles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const articles = limit > 0 ? allArticles.slice(0, limit) : allArticles;
+
+const formatDate = (d: Date) => new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(d);
+
+const bg = isRaised ? 'bg-raised' : 'bg-base';
+---
+
+<section id="writing" class:list={[bg, 'border-t border-stroke w-full']} style="padding: 5rem 0;">
+  {showHeader && (
+    <div class="container" style="margin-bottom: 2rem;">
+      <h2 class="label">WRITING</h2>
+    </div>
+  )}
+
+  <div class="container">
+    <div class="flex flex-col w-full article-list">
+      {articles.map((article) => (
+        <a href={`/articles/${article.id}/`} class="article-item group block w-full border-t border-stroke transition-colors duration-150" style="padding: 1.5rem 0;">
+          <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
+            <span class="mono text-subtle" style="font-size: 0.7rem;">{formatDate(article.data.date)}</span>
+            <span class="mono text-subtle uppercase text-right" style="font-size: 0.65rem;">{article.data.tag}</span>
+          </div>
+          <div class="flex items-center justify-between w-full">
+            <h3 class="serif-italic text-body flex-grow group-hover:underline group-hover:underline-offset-4 decoration-2 group-hover:decoration-prussian" style="font-size: 1.35rem;">{article.data.title}</h3>
+            <span class="text-body group-hover:text-prussian transition-all duration-150 group-hover:translate-x-1 ml-4" style="font-size: 1rem;">→</span>
+          </div>
+          <div class="font-sans font-light text-subtle max-w-prose line-clamp-2" style="margin-top: 0.5rem; font-size: 0.85rem;">
+            {article.data.excerpt}
+          </div>
+        </a>
+      ))}
+      {showFooter && (
+        <div class="border-t border-stroke w-full" style="padding: 1.5rem 0;">
+          <a href="/articles" class="group font-sans text-body hover:text-prussian flex items-center w-fit transition-colors duration-150" style="font-size: 0.85rem;">
+            View all articles <span class="ml-2 group-hover:translate-x-1 transition-transform duration-150">→</span>
+          </a>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

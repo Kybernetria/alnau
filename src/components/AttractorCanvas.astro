@@ -1,0 +1,115 @@
+---
+// AttractorCanvas.astro — Lorenz attractor with mouse interaction + color cycling
+---
+<canvas id="attractor" aria-hidden="true" style="touch-action: pan-y;"></canvas>
+<svg id="attractor-static" aria-hidden="true" style="display:none">
+  <path d="M26,10 C15,20 10,30 20,40 C30,50 40,40 26,30" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
+</svg>
+
+<style>
+  #attractor { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.9; }
+  #attractor-static { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.15; }
+  @media (prefers-reduced-motion: reduce) {
+    #attractor { display: none; }
+    #attractor-static { display: block; }
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('attractor') as HTMLCanvasElement;
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const sigma = 10, rho = 28, beta = 8 / 3, dt = 0.005;
+      const STEPS = 4;
+
+      const particles = [
+        { x: 0.1, y: 0, z: 0 },
+        { x: 0.1001, y: 0.001, z: 0 },
+        { x: 0.1, y: 0, z: 0.001 },
+      ];
+
+      const alphas = [0.5, 0.3, 0.18];
+
+      let w = 0, h = 0, sc = 0, cx = 0, cy = 0;
+      let mx = -9999, my = -9999;
+      let frame = 0;
+
+      function theme() { return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light'; }
+
+      function resize() {
+        w = canvas.width = canvas.offsetWidth;
+        h = canvas.height = canvas.offsetHeight;
+        sc = Math.min(w, h) / 60;
+        cx = w * 0.50;
+        cy = h * 0.52;
+        ctx.clearRect(0, 0, w, h);
+      }
+
+      new ResizeObserver(resize).observe(canvas);
+      resize();
+
+      canvas.addEventListener('mousemove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+      canvas.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
+      canvas.addEventListener('touchmove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.touches[0].clientX - r.left; my = e.touches[0].clientY - r.top; }, { passive: true });
+      canvas.addEventListener('touchend', () => { mx = -9999; my = -9999; });
+
+      new MutationObserver(() => ctx.clearRect(0, 0, w, h)).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+      function draw() {
+        const t = theme();
+        const isLight = t === 'light';
+
+        // Slow fade — traces last ~35 seconds at 60fps
+        ctx.fillStyle = isLight ? 'rgba(240, 235, 227, 0.002)' : 'rgba(12, 12, 12, 0.002)';
+        ctx.fillRect(0, 0, w, h);
+
+        // Color cycling — slowly shift hue over time
+        const baseHue = 210 + Math.sin(frame * 0.0006) * 45; // oscillates ~165-255
+
+        for (let p = 0; p < particles.length; p++) {
+          const pt = particles[p];
+          for (let s = 0; s < STEPS; s++) {
+            pt.x += sigma * (pt.y - pt.x) * dt;
+            pt.y += (pt.x * (rho - pt.z) - pt.y) * dt;
+            pt.z += (pt.x * pt.y - beta * pt.z) * dt;
+
+            const px = cx + pt.x * sc;
+            const py = cy - pt.z * sc + 18 * sc;
+
+            // Mouse perturbation
+            const dx = mx - px, dy = my - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const influence = Math.max(0, 1 - dist / 200);
+            if (influence > 0) {
+              const ang = Math.atan2(dy, dx);
+              pt.x -= Math.cos(ang) * influence * 2.5;
+              pt.z += influence * 4 * Math.sin(frame * 0.04);
+            }
+
+            pt.x = Math.max(-50, Math.min(50, pt.x));
+            pt.y = Math.max(-60, Math.min(60, pt.y));
+            pt.z = Math.max(-10, Math.min(65, pt.z));
+
+            // Per-particle hue offset + cycling
+            const hue = baseHue + p * 20;
+            const sat = isLight ? 50 : 60;
+            const lit = isLight ? 30 : 55;
+            const alpha = alphas[p];
+
+            let radius = p === 0 ? 1.0 : p === 1 ? 0.7 : 0.5;
+            if (influence > 0) radius *= (1 + influence * 1.5);
+
+            ctx.beginPath();
+            ctx.arc(px, py, radius, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${alpha})`;
+            ctx.fill();
+          }
+        }
+        frame++;
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  }
+</script>

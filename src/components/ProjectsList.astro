@@ -1,0 +1,45 @@
+---
+import fs from 'node:fs';
+const configPath = new URL('../../site-config.json', import.meta.url);
+let projects: any[] = [];
+let socials = { github: '#' } as any;
+try {
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  projects = config.projects || [];
+  socials = config.socials || socials;
+} catch(e) {}
+---
+
+<section id="work" class="bg-base border-t border-stroke w-full" style="padding: 6rem 0;">
+  <div class="container" style="margin-bottom: 2rem;">
+    <h2 class="label">WORK</h2>
+  </div>
+
+  <div class="container">
+    <div class="flex flex-col w-full project-list">
+      {projects.map((project: any, i: number) => (
+        <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-item group block w-full border-t border-stroke transition-colors duration-150 hover:bg-raised" style="padding: 2rem 1.25rem; margin: 0 -1.25rem; width: calc(100% + 2.5rem);">
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-baseline gap-4 flex-grow min-w-0">
+              <span class="mono text-subtle shrink-0" style="font-size: 0.75rem; width: 3ch;">{(i + 1).toString().padStart(2, '0')}</span>
+              <span class="font-sans font-normal text-body group-hover:text-steel transition-colors duration-150" style="font-size: 1.1rem;">{project.title}</span>
+            </div>
+            <div class="flex items-center gap-4 shrink-0">
+              <span class="mono text-subtle uppercase border border-stroke hidden md:inline-block" style="font-size: 0.65rem; border-radius: 2px; padding: 0.2rem 0.5rem;">{project.domain}</span>
+              <span class="text-body group-hover:text-steel transition-all duration-150 group-hover:translate-x-1" style="font-size: 1rem;">→</span>
+            </div>
+          </div>
+          <div class="flex justify-between w-full" style="margin-top: 0.75rem; padding-left: calc(1rem + 3ch);">
+            <span class="font-sans font-light text-subtle" style="font-size: 0.875rem;">{project.description}</span>
+            <span class="mono text-subtle shrink-0" style="font-size: 0.7rem;">{project.year}</span>
+          </div>
+        </a>
+      ))}
+      <div class="border-t border-stroke w-full" style="padding: 1.5rem 0;">
+        <a href={socials.github} target="_blank" rel="noopener noreferrer" class="group flex items-center text-subtle hover:text-steel transition-colors duration-150 w-fit mono" style="font-size: 0.75rem;">
+          All repositories <span class="ml-2 group-hover:translate-x-1 transition-transform duration-150">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

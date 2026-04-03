@@ -1,0 +1,77 @@
+---
+import fs from 'node:fs';
+const configPath = new URL('../../site-config.json', import.meta.url);
+let siteName = 'Augusta Lykke Nau';
+try {
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  siteName = config.name || siteName;
+} catch(e) {}
+---
+
+<header id="navbar" class="nav-backdrop fixed top-0 left-0 w-full z-50" style="height: 56px;">
+  <div class="container h-full flex justify-between items-center">
+    <a href="/" id="site-name" class="serif-italic text-body" style="font-size: 1.2rem; transition: opacity 300ms ease;">{siteName}</a>
+    
+    <div class="hidden md:flex items-center" style="gap: 1.25rem;">
+      <nav class="flex items-center font-sans font-normal text-subtle" style="gap: 0.75rem; font-size: 0.95rem;">
+        <a href="/#work" class="hover:text-body transition-colors duration-150">Work</a>
+        <span class="select-none text-subtle" style="opacity: 0.4;">·</span>
+        <a href="/articles" class="hover:text-body transition-colors duration-150">Articles</a>
+        <span class="select-none text-subtle" style="opacity: 0.4;">·</span>
+        <a href="mailto:hello@alnau.com" class="hover:text-body transition-colors duration-150">Contact</a>
+      </nav>
+      <button id="theme-toggle" class="mono text-subtle hover:text-body transition-colors duration-150" style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--color-stroke); border-radius: 2px; padding: 0.2rem 0.5rem; cursor: pointer;">Light</button>
+    </div>
+
+    <div class="md:hidden flex items-center" style="gap: 1rem;">
+      <button id="theme-toggle-mobile" class="mono text-subtle" style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--color-stroke); border-radius: 2px; padding: 0.15rem 0.4rem; cursor: pointer;">☀</button>
+      <button id="menu-btn" class="font-sans text-subtle" style="font-size: 0.95rem; background: none; border: none; cursor: pointer;">Menu</button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="fixed inset-0 z-50 flex flex-col justify-center items-center bg-base" style="opacity: 0; pointer-events: none; transition: opacity 250ms ease;">
+    <button id="close-btn" class="absolute font-sans text-subtle" style="top: 1.5rem; right: 1.5rem; font-size: 0.95rem; background: none; border: none; cursor: pointer; padding: 0.5rem;">✕</button>
+    <nav class="flex flex-col gap-8 text-center">
+      <a href="/#work" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Work</a>
+      <a href="/articles" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Articles</a>
+      <a href="mailto:hello@alnau.com" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function initNavbar() {
+    const siteNameEl = document.getElementById('site-name');
+    window.addEventListener('scroll', () => {
+      if (siteNameEl) siteNameEl.style.opacity = window.scrollY > 80 ? '0' : '1';
+    });
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    function openMenu() { if (mobileMenu) { mobileMenu.style.opacity = '1'; mobileMenu.style.pointerEvents = 'auto'; document.body.style.overflow = 'hidden'; } }
+    function closeMenu() { if (mobileMenu) { mobileMenu.style.opacity = '0'; mobileMenu.style.pointerEvents = 'none'; document.body.style.overflow = ''; } }
+    menuBtn?.addEventListener('click', openMenu);
+    closeBtn?.addEventListener('click', closeMenu);
+    mobileLinks.forEach(l => l.addEventListener('click', closeMenu));
+
+    function updateToggleLabels() {
+      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const db = document.getElementById('theme-toggle');
+      const mb = document.getElementById('theme-toggle-mobile');
+      if (db) db.textContent = theme === 'dark' ? 'Light' : 'Dark';
+      if (mb) mb.textContent = theme === 'dark' ? '☀' : '☽';
+    }
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateToggleLabels();
+    }
+    document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+    updateToggleLabels();
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initNavbar); } else { initNavbar(); }
+</script>

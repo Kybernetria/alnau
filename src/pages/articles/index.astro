@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import ArticlesList from '../../components/ArticlesList.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<BaseLayout title="Writing — Augusta Lykke Nau">
+  <Navbar />
+  
+  <header class="container border-b border-stroke" style="padding: 10.5rem 0 3rem;">
+    <h1 class="serif-italic text-body" style="font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1rem;">
+      Writing
+    </h1>
+    <p class="font-sans font-light text-subtle" style="font-size: 1rem;">
+      <!-- PLACEHOLDER: tagline for the writing page -->
+      Notes on systems, society, and code.
+    </p>
+  </header>
+
+  <main class="w-full bg-base" style="padding-bottom: 5rem;">
+    <ArticlesList variant="default" showHeader={false} showFooter={false} />
+  </main>
+
+  <Footer />
+</BaseLayout>

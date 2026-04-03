@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import ProjectsList from '../components/ProjectsList.astro';
+import ArticlesList from '../components/ArticlesList.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout>
+  <Navbar />
+  <main>
+    <Hero />
+    <ProjectsList />
+    <ArticlesList limit={3} variant="raised" />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const projectItems = document.querySelectorAll('.project-item');
+  if (projectItems.length > 0) {
+    gsap.set(projectItems, { opacity: 0, y: 20 });
+    gsap.to(projectItems, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: '.project-list', start: 'top 85%' } });
+  }
+
+  const articleItems = document.querySelectorAll('.article-item');
+  if (articleItems.length > 0) {
+    gsap.set(articleItems, { opacity: 0, y: 20 });
+    gsap.to(articleItems, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: '.article-list', start: 'top 85%' } });
+  }
+</script>
