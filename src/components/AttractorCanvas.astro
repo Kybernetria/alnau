@@ -41,12 +41,15 @@
     function theme() { return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light'; }
 
     function resize() {
-      // Use parent dimensions as fallback for mobile where offsetWidth can be 0 initially
       const parent = canvas.parentElement;
       const pw = parent ? parent.clientWidth : window.innerWidth;
       const ph = parent ? parent.clientHeight : window.innerHeight;
-      w = canvas.width = canvas.offsetWidth || pw;
-      h = canvas.height = canvas.offsetHeight || ph;
+
+      // Prevent mobile URL bar scroll wipe/jolt by ignoring height-only resizes
+      if (w > 0 && Math.abs(pw - w) < 10) return;
+
+      w = canvas.width = pw || window.innerWidth;
+      h = canvas.height = ph || window.innerHeight;
       sc = Math.min(w, h) / 60;
       cx = w * 0.50;
       cy = h * 0.58;
@@ -57,7 +60,8 @@
     resize();
     // Extra resize after paint — catches mobile cases where dimensions aren't ready on first call
     requestAnimationFrame(() => { resize(); });
-    window.addEventListener('resize', resize);
+    // Handled purely by ResizeObserver now
+
 
     canvas.addEventListener('mousemove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
     canvas.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
@@ -76,7 +80,7 @@
       // Use source-over fading with exact CSS background colors RGB values.
       // This prevents muddy colors and alpha rounding bugs across browsers.
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = isLight ? 'rgba(224, 223, 218, 0.05)' : 'rgba(12, 12, 12, 0.05)';
+      ctx.fillStyle = isLight ? 'rgba(224, 223, 218, 0.015)' : 'rgba(12, 12, 12, 0.015)';
       ctx.fillRect(0, 0, w, h);
 
       const baseHue = 210 + Math.sin(frame * 0.002) * 55;
