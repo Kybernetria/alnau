@@ -25,10 +25,14 @@
     const sigma = 10, rho = 28, beta = 8 / 3, dt = 0.005;
     const STEPS = 4;
 
+    const startX = (Math.random() - 0.5) * 20;
+    const startY = (Math.random() - 0.5) * 20;
+    const startZ = Math.random() * 30 + 10;
+
     const particles = [
-      { x: 0.1, y: 0, z: 0 },
-      { x: 0.1001, y: 0.001, z: 0 },
-      { x: 0.1, y: 0, z: 0.001 },
+      { x: startX, y: startY, z: startZ },
+      { x: startX + 0.01, y: startY, z: startZ },
+      { x: startX, y: startY + 0.01, z: startZ },
     ];
 
     const alphas = [0.65, 0.4, 0.25];
@@ -72,10 +76,9 @@
       const t = theme();
       const isLight = t === 'light';
 
-      if (frame % 5 === 0) {
-        ctx.fillStyle = isLight ? 'rgba(240, 235, 227, 0.012)' : 'rgba(12, 12, 12, 0.012)';
-        ctx.fillRect(0, 0, w, h);
-      }
+      // Every frame fade with larger alpha for smoother, more noticeable early fade
+      ctx.fillStyle = isLight ? 'rgba(240, 235, 227, 0.035)' : 'rgba(12, 12, 12, 0.035)';
+      ctx.fillRect(0, 0, w, h);
 
       const baseHue = 210 + Math.sin(frame * 0.002) * 55;
 
@@ -91,11 +94,13 @@
 
           const dx = mx - px, dy = my - py;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const influence = Math.max(0, 1 - dist / 200);
+          // Increased interaction radius and strength
+          const influence = Math.max(0, 1 - dist / 350);
           if (influence > 0) {
             const ang = Math.atan2(dy, dx);
-            pt.x -= Math.cos(ang) * influence * 2.5;
-            pt.z += influence * 4 * Math.sin(frame * 0.04);
+            pt.x -= Math.cos(ang) * influence * 6;
+            pt.y -= Math.sin(ang) * influence * 6;
+            pt.z += influence * 8 * Math.sin(frame * 0.05);
           }
 
           pt.x = Math.max(-50, Math.min(50, pt.x));
