@@ -1,5 +1,5 @@
 ---
-// AttractorCanvas.astro — Lorenz attractor with mouse interaction + color cycling
+// AttractorCanvas.astro — Lorenz attractor with mouse interaction + color cycling + real fade
 ---
 <canvas id="attractor" aria-hidden="true" style="touch-action: pan-y;"></canvas>
 <svg id="attractor-static" aria-hidden="true" style="display:none">
@@ -60,12 +60,17 @@
         const t = theme();
         const isLight = t === 'light';
 
-        // Slow fade — traces last ~35 seconds at 60fps
-        ctx.fillStyle = isLight ? 'rgba(240, 235, 227, 0.002)' : 'rgba(12, 12, 12, 0.002)';
-        ctx.fillRect(0, 0, w, h);
+        // Fade every 5 frames with alpha 0.012.
+        // Canvas 8-bit precision rounds tiny alphas to 0 (traces never fade).
+        // 0.012 every 5 frames → change ≥1 per channel → actually works.
+        // Effective trace lifetime: ~32 seconds at 60fps.
+        if (frame % 5 === 0) {
+          ctx.fillStyle = isLight ? 'rgba(240, 235, 227, 0.012)' : 'rgba(12, 12, 12, 0.012)';
+          ctx.fillRect(0, 0, w, h);
+        }
 
-        // Color cycling — slowly shift hue over time
-        const baseHue = 210 + Math.sin(frame * 0.0006) * 45; // oscillates ~165-255
+        // Color cycling
+        const baseHue = 210 + Math.sin(frame * 0.0006) * 45;
 
         for (let p = 0; p < particles.length; p++) {
           const pt = particles[p];
@@ -77,7 +82,6 @@
             const px = cx + pt.x * sc;
             const py = cy - pt.z * sc + 18 * sc;
 
-            // Mouse perturbation
             const dx = mx - px, dy = my - py;
             const dist = Math.sqrt(dx * dx + dy * dy);
             const influence = Math.max(0, 1 - dist / 200);
@@ -91,18 +95,16 @@
             pt.y = Math.max(-60, Math.min(60, pt.y));
             pt.z = Math.max(-10, Math.min(65, pt.z));
 
-            // Per-particle hue offset + cycling
             const hue = baseHue + p * 20;
             const sat = isLight ? 50 : 60;
             const lit = isLight ? 30 : 55;
-            const alpha = alphas[p];
 
             let radius = p === 0 ? 1.0 : p === 1 ? 0.7 : 0.5;
             if (influence > 0) radius *= (1 + influence * 1.5);
 
             ctx.beginPath();
             ctx.arc(px, py, radius, 0, Math.PI * 2);
-            ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${alpha})`;
+            ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${alphas[p]})`;
             ctx.fill();
           }
         }
