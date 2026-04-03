@@ -31,11 +31,11 @@
 
 /* ─── Light mode overrides ───────────────────────────────── */
 [data-theme="light"] {
-  --color-base:        #EAE5DC;
-  --color-raised:      #F0EDE6;
-  --color-body:        #1C1C1C;
-  --color-subtle:      #5A5854;
-  --color-stroke:      #D8D2CB;
+  --color-base:        #E0DFDA; /* More stylized, muted grey-beige */
+  --color-raised:      #E8E7E2; /* Lighter cream for raised accents */
+  --color-body:        #000000; /* Pure black for maximum contrast */
+  --color-subtle:      #4A4A46; /* Darker subtle text for legibility */
+  --color-stroke:      #C4C3BE; /* Darker borders to define areas well */
   --color-alt-base:    #0C0C0C;
   --color-alt-body:    #E6E0D9;
   --color-alt-subtle:  #7A7672;
@@ -96,7 +96,7 @@ body::after {
   border-bottom: 1px solid var(--color-stroke);
 }
 [data-theme="light"] .nav-backdrop {
-  background: rgba(234, 229, 220, 0.92);
+  background: rgba(224, 223, 218, 0.92);
 }
 
 /* ─── Buttons ────────────────────────────────────────────── */
@@ -128,6 +128,4 @@ body::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  #attractor { display: none; }
-  #attractor-static { display: block; }
 }
