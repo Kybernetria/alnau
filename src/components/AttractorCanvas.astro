@@ -38,6 +38,9 @@
     let mx = -9999, my = -9999;
     let frame = 0;
 
+    const MAX_HISTORY = 400; // About 2-3 seconds at 60fps
+    const history: {x: number, y: number, radM: number}[][] = [[], [], []];
+
     function theme() { return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light'; }
 
     function resize() {
@@ -77,14 +80,12 @@
       const t = theme();
       const isLight = t === 'light';
 
-      // Use source-over fading with exact CSS background colors RGB values.
-      // This prevents muddy colors and alpha rounding bugs across browsers.
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = isLight ? 'rgba(228, 228, 228, 0.015)' : 'rgba(12, 12, 12, 0.015)';
-      ctx.fillRect(0, 0, w, h);
+      // Absolutely clear the entire canvas to pristine transpency every frame to avoid any trace accumulation
+      ctx.clearRect(0, 0, w, h);
 
       const baseHue = 210 + Math.sin(frame * 0.002) * 55;
 
+      // First calculate current physics and store in history
       for (let p = 0; p < particles.length; p++) {
         const pt = particles[p];
         for (let s = 0; s < STEPS; s++) {
@@ -97,30 +98,41 @@
 
           const dx = mx - px, dy = my - py;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          // Increased interaction radius and strength
+          let radM = 1;
           const influence = Math.max(0, 1 - dist / 350);
           if (influence > 0) {
             const ang = Math.atan2(dy, dx);
             pt.x -= Math.cos(ang) * influence * 6;
             pt.y -= Math.sin(ang) * influence * 6;
             pt.z += influence * 8 * Math.sin(frame * 0.05);
+            radM = 1 + influence * 1.5;
           }
 
           pt.x = Math.max(-50, Math.min(50, pt.x));
           pt.y = Math.max(-60, Math.min(60, pt.y));
           pt.z = Math.max(-10, Math.min(65, pt.z));
 
-          const hue = baseHue + p * 25;
-          const sat = isLight ? 80 : 75;
-          const lit = isLight ? 25 : 58;
-          const alpha = isLight ? Math.min(1, alphas[p] * 1.35) : alphas[p];
+          history[p].push({ x: px, y: py, radM: radM });
+          if (history[p].length > MAX_HISTORY) {
+            history[p].shift();
+          }
+        }
 
-          let radius = p === 0 ? 1.0 : p === 1 ? 0.7 : 0.5;
-          if (influence > 0) radius *= (1 + influence * 1.5);
+        // Explicitly render points
+        const hue = baseHue + p * 25;
+        const sat = isLight ? 80 : 75;
+        const lit = isLight ? 25 : 58;
+        const baseAlpha = isLight ? Math.min(1, alphas[p] * 1.35) : alphas[p];
+        const baseRadius = p === 0 ? 1.0 : p === 1 ? 0.7 : 0.5;
 
+        for (let i = 0; i < history[p].length; i++) {
+          const point = history[p][i];
+          const ageRatio = i / history[p].length; // 0 is oldest, 1 is newest
+          const pointAlpha = baseAlpha * (ageRatio * ageRatio); // quadratic fade curve
+          
           ctx.beginPath();
-          ctx.arc(px, py, radius, 0, Math.PI * 2);
-          ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${alpha})`;
+          ctx.arc(point.x, point.y, baseRadius * point.radM, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${pointAlpha})`;
           ctx.fill();
         }
       }
