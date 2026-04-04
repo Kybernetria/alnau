@@ -100,13 +100,13 @@
           const dx = mx - px, dy = my - py;
           const dist = Math.sqrt(dx * dx + dy * dy);
           let radM = 1;
-          const influence = Math.max(0, 1 - dist / 350);
+          const influence = Math.max(0, 1 - dist / 250);
           if (influence > 0) {
             const ang = Math.atan2(dy, dx);
-            pt.x -= Math.cos(ang) * influence * 6;
-            pt.y -= Math.sin(ang) * influence * 6;
-            pt.z += influence * 8 * Math.sin(frame * 0.05);
-            radM = 1 + influence * 1.5;
+            pt.x -= Math.cos(ang) * influence * 3;
+            pt.y -= Math.sin(ang) * influence * 3;
+            pt.z += influence * 5 * Math.sin(frame * 0.05);
+            radM = 1 + influence * 1.2;
           }
 
           pt.x = Math.max(-50, Math.min(50, pt.x));
