@@ -38,7 +38,7 @@
     let mx = -9999, my = -9999;
     let frame = 0;
 
-    const MAX_HISTORY = 400; // About 2-3 seconds at 60fps
+    const MAX_HISTORY = 4000; // ~16 seconds tail at 60fps
     const history: {x: number, y: number, radM: number}[][] = [[], [], []];
 
     function theme() { return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light'; }
@@ -125,8 +125,20 @@
         const baseAlpha = isLight ? Math.min(1, alphas[p] * 1.35) : alphas[p];
         const baseRadius = p === 0 ? 1.0 : p === 1 ? 0.7 : 0.5;
 
+        let lastDraw = null;
+        // Step size for loop optimization to prevent 12,000 draw calls lagging mobile
+        // We only draw points that visually moved enough to matter
         for (let i = 0; i < history[p].length; i++) {
           const point = history[p][i];
+          
+          if (lastDraw) {
+            const dpX = point.x - lastDraw.x;
+            const dpY = point.y - lastDraw.y;
+            // Cull rendering if distance is less than 0.7 pixels (pure overdraw)
+            if (dpX * dpX + dpY * dpY < 0.49) continue;
+          }
+          lastDraw = point;
+
           const ageRatio = i / history[p].length; // 0 is oldest, 1 is newest
           const pointAlpha = baseAlpha * (ageRatio * ageRatio); // quadratic fade curve
           
