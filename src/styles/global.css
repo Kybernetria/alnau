@@ -51,6 +51,11 @@
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
   }
+  @media (min-width: 768px) {
+    html {
+      font-size: 18px; /* Scales up all rem-based typography cleanly for desktop */
+    }
+  }
   body {
     background-color: var(--color-base);
     color: var(--color-body);
