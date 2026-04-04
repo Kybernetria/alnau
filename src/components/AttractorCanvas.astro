@@ -38,7 +38,7 @@
     let mx = -9999, my = -9999;
     let frame = 0;
 
-    const MAX_HISTORY = 4000; // ~16 seconds tail at 60fps
+    const MAX_HISTORY = 6000; // ~24 seconds tail at 60fps
     const history: {x: number, y: number, radM: number}[][] = [[], [], []];
 
     function theme() { return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light'; }
@@ -54,7 +54,8 @@
       w = canvas.width = pw || window.innerWidth;
       h = canvas.height = ph || window.innerHeight;
       sc = Math.min(w, h) / 60;
-      cx = w * 0.50;
+      // Move a smidge to the right on desktop to balance the text column
+      cx = w > 768 ? w * 0.58 : w * 0.50;
       cy = h * 0.58;
       ctx.clearRect(0, 0, w, h);
     }
