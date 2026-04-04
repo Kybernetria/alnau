@@ -31,11 +31,11 @@
 
 /* ─── Light mode overrides ───────────────────────────────── */
 [data-theme="light"] {
-  --color-base:        #E0DFDA; /* More stylized, muted grey-beige */
-  --color-raised:      #E8E7E2; /* Lighter cream for raised accents */
-  --color-body:        #000000; /* Pure black for maximum contrast */
-  --color-subtle:      #4A4A46; /* Darker subtle text for legibility */
-  --color-stroke:      #C4C3BE; /* Darker borders to define areas well */
+  --color-base:        #E4E4E4; /* Neutral precision grey, absolutely 0% pink/red bias */
+  --color-raised:      #EBEBEB; /* Lighter neutral grey */
+  --color-body:        #111111; /* Deep, sharp contrast */
+  --color-subtle:      #555555; /* Neutral mid-grey for secondary text */
+  --color-stroke:      #C8C8C8; /* Neutral border */
   --color-alt-base:    #0C0C0C;
   --color-alt-body:    #E6E0D9;
   --color-alt-subtle:  #7A7672;
@@ -96,7 +96,7 @@ body::after {
   border-bottom: 1px solid var(--color-stroke);
 }
 [data-theme="light"] .nav-backdrop {
-  background: rgba(224, 223, 218, 0.92);
+  background: rgba(228, 228, 228, 0.92);
 }
 
 /* ─── Buttons ────────────────────────────────────────────── */
