@@ -25,3 +25,16 @@ pnpm-debug.log*
 
 # instructions & prompts
 ALNAU_BUILD_PROMPT.md
+prompt.md
+
+# environment variables (catch all)
+.env*
+!.env.example
+
+# OS and temporary files
+.directory
+Thumbs.db
+.DS_Store
+
+# logs (catch all)
+*.log

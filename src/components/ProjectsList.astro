@@ -1,5 +1,6 @@
 ---
 import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 import config from '../../site-config.json';
 const projects = config.projects || [];
 const socials = config.socials || { github: '#' };
@@ -36,7 +37,7 @@ marked.setOptions({
             <div 
               class="project-description font-sans font-light text-subtle prose-links:text-steel prose-links:underline prose-links:underline-offset-2 hover:prose-links:text-body transition-colors" 
               style="font-size: 0.875rem;"
-              set:html={marked.parse(project.description)}
+              set:html={sanitizeHtml(marked.parse(project.description) as string)}
             />
             <span class="mono text-subtle shrink-0" style="font-size: 0.7rem;">{project.year}</span>
           </div>
