@@ -12,12 +12,12 @@ const mask = (s: string) => s.split('').map(c => c === ' ' ? ' ' : '·').join(''
 
   <div class="absolute inset-0 z-10 flex flex-col" style="padding-left: clamp(2rem, 8vw, 9rem); padding-right: clamp(2rem, 8vw, 9rem); padding-top: clamp(6rem, 15vh, 10rem); padding-bottom: clamp(3rem, 10vh, 5rem); pointer-events: none;">
     
-    <div class="label mb-auto opacity-0" id="hero-domain" style="letter-spacing: 0.15em; font-size: 0.68rem;">
-      <!-- PLACEHOLDER: adjust domain labels to match owner's primary disciplines -->
-      {domainLabel}
-    </div>
-
     <div class="mb-auto">
+      <div class="label mb-6 opacity-0" id="hero-domain" style="letter-spacing: 0.15em; font-size: 0.68rem;">
+        <!-- PLACEHOLDER: adjust domain labels to match owner's primary disciplines -->
+        {domainLabel}
+      </div>
+
       <h1 class="serif-italic text-body flex flex-col items-start" style="font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1.08; letter-spacing: -0.02em; overflow-wrap: break-word; min-width: 0; margin-bottom: 0;" aria-label="Building systems at the edge of code and society.">
         <!-- PLACEHOLDER: replace with owner's actual positioning statement -->
         <span class="hero-line" data-text={headlineLine1}>{mask(headlineLine1)}</span>
