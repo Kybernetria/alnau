@@ -1,60 +1,94 @@
 ---
-// AttractorCanvas.astro — Lorenz attractor with mouse interaction + color cycling + real fade
+// AttractorCanvas.astro — Lorenz attractor, performance-optimised
 ---
 <canvas id="attractor" aria-hidden="true" style="touch-action: pan-y;"></canvas>
-<svg id="attractor-static" aria-hidden="true" style="display:none">
-  <path d="M26,10 C15,20 10,30 20,40 C30,50 40,40 26,30" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
-</svg>
 
 <style>
-  #attractor { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.9; }
-  #attractor-static { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.15; }
-
+  #attractor {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.9;
+    will-change: transform; /* hint GPU compositor layer */
+  }
 </style>
 
 <script>
   function initAttractor() {
     const canvas = document.getElementById('attractor') as HTMLCanvasElement;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const sigma = 10, rho = 28, beta = 8 / 3, dt = 0.005;
-    const STEPS = 4;
+    // ── Constants ────────────────────────────────────────────────────────────
+    const sigma = 10, rho = 28, beta = 8 / 3, dt = 0.0048; // ~20% faster than previous tweak
 
+    // Device-adaptive quality: mobile gets lighter settings
+    const isMobile = window.innerWidth < 768;
+    // Steps per frame (fewer = slower, smoother looking trail)
+    const STEPS       = isMobile ? 2 : 2;
+    // DPR capped at 2 to avoid 3× overdraw on high-DPI mobile
+    const DPR         = Math.min(window.devicePixelRatio || 1, 2);
+    // Tail length in samples (ring buffer size)
+    const MAX_HISTORY = isMobile ? 3000 : 5000;
+    // More buckets = smoother gradient fade
+    const BUCKETS     = isMobile ? 14 : 22;
+
+    const N_PARTICLES = 3;
+    const alphas      = [0.65, 0.4, 0.25];
+    const baseRadii   = [1.05, 0.75, 0.55];
+
+    // ── Ring buffers ─────────────────────────────────────────────────────────
+    // Each particle stores (x, y) interleaved in a Float32Array ring
+    // Avoiding .shift() (O(n)) entirely — write head only moves forward
+    const bufs: Float32Array[] = Array.from({ length: N_PARTICLES }, () =>
+      new Float32Array(MAX_HISTORY * 2)
+    );
+    const heads = new Int32Array(N_PARTICLES);   // write head per particle
+    const lens  = new Int32Array(N_PARTICLES);   // filled samples per particle
+
+    // ── Particle state ───────────────────────────────────────────────────────
     const startX = (Math.random() - 0.5) * 20;
     const startY = (Math.random() - 0.5) * 20;
     const startZ = Math.random() * 30 + 10;
-
-    const particles = [
-      { x: startX, y: startY, z: startZ },
-      { x: startX + 0.01, y: startY, z: startZ },
-      { x: startX, y: startY + 0.01, z: startZ },
+    const pts = [
+      { x: startX,        y: startY,        z: startZ },
+      { x: startX + 0.01, y: startY,        z: startZ },
+      { x: startX,        y: startY + 0.01, z: startZ },
     ];
 
-    const alphas = [0.65, 0.4, 0.25];
-
+    // ── Layout state ─────────────────────────────────────────────────────────
     let w = 0, h = 0, sc = 0, cx = 0, cy = 0;
     let mx = -9999, my = -9999;
     let frame = 0;
+    const hueStart = Math.random() * 360; // random color every page load
+    let rafId = 0;
+    let paused = false;
 
-    const MAX_HISTORY = 6000; // ~24 seconds tail at 60fps
-    const history: {x: number, y: number, radM: number}[][] = [[], [], []];
-
-    function theme() { return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light'; }
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function theme() {
+      return (document.documentElement.getAttribute('data-theme') || 'dark') as 'dark' | 'light';
+    }
 
     function resize() {
       const parent = canvas.parentElement;
-      const pw = parent ? parent.clientWidth : window.innerWidth;
+      const pw = parent ? parent.clientWidth  : window.innerWidth;
       const ph = parent ? parent.clientHeight : window.innerHeight;
+      if (w > 0 && Math.abs(pw - w) < 10) return; // ignore height-only mobile toolbar flicker
 
-      // Prevent mobile URL bar scroll wipe/jolt by ignoring height-only resizes
-      if (w > 0 && Math.abs(pw - w) < 10) return;
+      w = pw || window.innerWidth;
+      h = ph || window.innerHeight;
 
-      w = canvas.width = pw || window.innerWidth;
-      h = canvas.height = ph || window.innerHeight;
+      // DPR-aware — physical pixels for sharp rendering without overdraw
+      canvas.width  = Math.round(w * DPR);
+      canvas.height = Math.round(h * DPR);
+      canvas.style.width  = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
       sc = Math.min(w, h) / 60;
-      // Move a smidge to the right on desktop to balance the text column
       cx = w > 768 ? w * 0.58 : w * 0.50;
       cy = h * 0.58;
       ctx.clearRect(0, 0, w, h);
@@ -62,34 +96,54 @@
 
     new ResizeObserver(resize).observe(canvas);
     resize();
-    // Extra resize after paint — catches mobile cases where dimensions aren't ready on first call
     requestAnimationFrame(() => { resize(); });
-    // Handled purely by ResizeObserver now
 
-
-    canvas.addEventListener('mousemove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
-    canvas.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
-    canvas.addEventListener('touchmove', (e) => { const r = canvas.getBoundingClientRect(); mx = e.touches[0].clientX - r.left; my = e.touches[0].clientY - r.top; }, { passive: true });
+    // ── Input ─────────────────────────────────────────────────────────────────
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave',  () => { mx = -9999; my = -9999; });
+    canvas.addEventListener('touchmove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      mx = e.touches[0].clientX - r.left;
+      my = e.touches[0].clientY - r.top;
+    }, { passive: true });
     canvas.addEventListener('touchend', () => { mx = -9999; my = -9999; });
 
-    new MutationObserver(() => { ctx.clearRect(0, 0, w, h); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    // Theme change → clear ghost trails
+    new MutationObserver(() => { ctx.clearRect(0, 0, w, h); }).observe(
+      document.documentElement,
+      { attributes: true, attributeFilter: ['data-theme'] }
+    );
 
+    // Pause when tab is hidden (saves CPU/battery entirely)
+    document.addEventListener('visibilitychange', () => {
+      paused = document.hidden;
+      if (!paused && rafId === 0) { rafId = requestAnimationFrame(draw); }
+    });
+
+    // ── Main draw loop ────────────────────────────────────────────────────────
     function draw() {
-      // Re-check size if canvas appears to have zero dimensions (mobile paint delay)
+      rafId = 0;
+      if (paused) return;
       if (w === 0 || h === 0) { resize(); }
 
-      const t = theme();
+      const t      = theme();
       const isLight = t === 'light';
 
-      // Absolutely clear the entire canvas to pristine transpency every frame to avoid any trace accumulation
       ctx.clearRect(0, 0, w, h);
 
-      const baseHue = 210 + Math.sin(frame * 0.002) * 55;
+      const baseHue = hueStart + Math.sin(frame * 0.002) * 55;
 
-      // First calculate current physics and store in history
-      for (let p = 0; p < particles.length; p++) {
-        const pt = particles[p];
+      // ── Physics + ring-buffer write ───────────────────────────────────────
+      for (let p = 0; p < N_PARTICLES; p++) {
+        const pt  = pts[p];
+        const buf = bufs[p];
+
         for (let s = 0; s < STEPS; s++) {
+          // Lorenz equations
           pt.x += sigma * (pt.y - pt.x) * dt;
           pt.y += (pt.x * (rho - pt.z) - pt.y) * dt;
           pt.z += (pt.x * pt.y - beta * pt.z) * dt;
@@ -97,65 +151,121 @@
           const px = cx + pt.x * sc;
           const py = cy - pt.z * sc + 18 * sc;
 
-          const dx = mx - px, dy = my - py;
+          // Mouse/touch influence
+          const dx   = mx - px;
+          const dy   = my - py;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          let radM = 1;
-          const influence = Math.max(0, 1 - dist / 250);
-          if (influence > 0) {
+          const infl = Math.max(0, 1 - dist / 250);
+          if (infl > 0) {
             const ang = Math.atan2(dy, dx);
-            pt.x -= Math.cos(ang) * influence * 3;
-            pt.y -= Math.sin(ang) * influence * 3;
-            pt.z += influence * 5 * Math.sin(frame * 0.05);
-            radM = 1 + influence * 1.2;
+            pt.x -= Math.cos(ang) * infl * 1.0; // was 3 — much gentler
+            pt.y -= Math.sin(ang) * infl * 1.0;
+            pt.z += infl * 1.5 * Math.sin(frame * 0.05); // was 5
           }
 
+          // Clamp to prevent runaway values
           pt.x = Math.max(-50, Math.min(50, pt.x));
           pt.y = Math.max(-60, Math.min(60, pt.y));
           pt.z = Math.max(-10, Math.min(65, pt.z));
 
-          history[p].push({ x: px, y: py, radM: radM });
-          if (history[p].length > MAX_HISTORY) {
-            history[p].shift();
-          }
-        }
-
-        // Explicitly render points
-        const hue = baseHue + p * 25;
-        const sat = isLight ? 80 : 75;
-        const lit = isLight ? 25 : 58;
-        const baseAlpha = isLight ? Math.min(1, alphas[p] * 1.35) : alphas[p];
-        const baseRadius = p === 0 ? 1.0 : p === 1 ? 0.7 : 0.5;
-
-        let lastDraw = null;
-        // Step size for loop optimization to prevent 12,000 draw calls lagging mobile
-        // We only draw points that visually moved enough to matter
-        for (let i = 0; i < history[p].length; i++) {
-          const point = history[p][i];
-          
-          if (lastDraw) {
-            const dpX = point.x - lastDraw.x;
-            const dpY = point.y - lastDraw.y;
-            // Cull rendering if distance is less than 0.7 pixels (pure overdraw)
-            if (dpX * dpX + dpY * dpY < 0.49) continue;
-          }
-          lastDraw = point;
-
-          const ageRatio = i / history[p].length; // 0 is oldest, 1 is newest
-          const pointAlpha = baseAlpha * (ageRatio * ageRatio); // quadratic fade curve
-          
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, baseRadius * point.radM, 0, Math.PI * 2);
-          ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${pointAlpha})`;
-          ctx.fill();
+          // Write to ring buffer
+          const head   = heads[p];
+          buf[head * 2]     = px;
+          buf[head * 2 + 1] = py;
+          heads[p] = (head + 1) % MAX_HISTORY;
+          if (lens[p] < MAX_HISTORY) lens[p]++;
         }
       }
+
+      // ── Render ────────────────────────────────────────────────────────────
+      // Strategy: divide each tail into BUCKETS segments by age.
+      // Each bucket is drawn as a single polyline with one globalAlpha set —
+      // this collapses thousands of individual arc() calls into ~BUCKETS path
+      // operations per particle, drastically cutting JS→GPU draw call overhead.
+
+      for (let p = 0; p < N_PARTICLES; p++) {
+        const buf  = bufs[p];
+        const len  = lens[p];
+        if (len < 2) continue;
+
+        const head = heads[p];
+        // FIX: when buffer isn't full yet, oldest sample is at physical index 0;
+        // only use the ring offset once the buffer has wrapped (lens === MAX_HISTORY).
+        const startIdx = len < MAX_HISTORY ? 0 : head;
+
+        const hue    = baseHue + p * 25;
+        const sat    = isLight ? 80 : 75;
+        const lit    = isLight ? 25 : 58;
+        const bAlpha = isLight ? Math.min(1, alphas[p] * 1.35) : alphas[p];
+        const radius = baseRadii[p];
+
+        // Pre-built color string (no per-point string alloc)
+        const colorBase = `hsl(${hue | 0}, ${sat}%, ${lit}%)`;
+
+        const bucketSize = Math.ceil(len / BUCKETS);
+        // Overlap buckets by 1 sample so there are no seam gaps between segments
+        const OVERLAP = 1;
+        // Jump threshold: if consecutive points are this far apart the attractor
+        // has flipped wings — break the path instead of drawing a line across the canvas
+        const JUMP_SQ = 40 * 40; // 40 CSS-px squared
+
+        ctx.strokeStyle = colorBase;
+        ctx.lineWidth   = radius * 2;
+        ctx.lineCap     = 'round';
+        ctx.lineJoin    = 'round';
+
+        for (let b = 0; b < BUCKETS; b++) {
+          // Bucket range with 1-sample overlap on the left to close seam gaps
+          const bStart = Math.max(0, b * bucketSize - OVERLAP);
+          const bEnd   = Math.min(b * bucketSize + bucketSize, len);
+          if (bStart >= len) break;
+
+          // Age ratio at midpoint of bucket (0 = oldest, 1 = newest)
+          const ageMid = (b * bucketSize + b * bucketSize + bucketSize) * 0.5 / len;
+          // Gentler power — old end fades smoothly, not abruptly
+          const alpha  = bAlpha * Math.pow(Math.min(ageMid, 1), 1.4);
+
+          ctx.globalAlpha = alpha;
+          ctx.beginPath();
+          let moved = false;
+          let prevX = 0, prevY = 0;
+
+          for (let i = bStart; i < bEnd; i++) {
+            const idx = (startIdx + i) % MAX_HISTORY;
+            const px  = buf[idx * 2];
+            const py  = buf[idx * 2 + 1];
+
+            // Skip sub-pixel overdraw
+            const ddx = px - prevX, ddy = py - prevY;
+            const distSq = ddx * ddx + ddy * ddy;
+            if (moved && distSq < 0.25) continue;
+
+            // Cross-wing jump detected — lift the pen instead of slashing across canvas
+            if (moved && distSq > JUMP_SQ) {
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(px, py);
+            } else if (!moved) {
+              ctx.moveTo(px, py);
+              moved = true;
+            } else {
+              ctx.lineTo(px, py);
+            }
+            prevX = px; prevY = py;
+          }
+          ctx.stroke();
+        }
+      }
+
+      ctx.globalAlpha = 1; // reset for anything rendered after
+
       frame++;
-      requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     }
-    draw();
+
+    rafId = requestAnimationFrame(draw);
   }
 
-  // Initialize on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAttractor);
   } else {

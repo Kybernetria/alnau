@@ -24,7 +24,7 @@
   --color-alt-stroke:  #D8D2CB;
 
   /* ─── Fonts ────────────────────────────────────────────── */
-  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans:  'Inter', system-ui, sans-serif;
   --font-mono:  'IBM Plex Mono', monospace;
 }
