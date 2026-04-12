@@ -158,3 +158,39 @@ article th {
 article tr:nth-child(even) td {
   background-color: var(--color-raised);
 }
+
+/* ─── Code Blocks ────────────────────────────────────────── */
+article pre {
+  padding: 1.25rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-stroke);
+  background-color: var(--color-raised) !important; /* Override Shiki defaults */
+  font-size: 0.85rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+article p > code, article li > code {
+  background-color: var(--color-raised);
+  border: 1px solid var(--color-stroke);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+}
+
+/* ─── Scrollbars ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-base); 
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-stroke); 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-subtle); 
+}
