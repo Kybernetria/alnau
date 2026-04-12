@@ -164,10 +164,24 @@ article pre {
   padding: 1.25rem;
   border-radius: 4px;
   border: 1px solid var(--color-stroke);
-  background-color: var(--color-raised) !important; /* Override Shiki defaults */
+  background-color: var(--color-raised) !important;
   font-size: 0.85rem;
   overflow-x: auto;
   margin: 1.5rem 0;
+}
+
+/* 
+  Astro dual-theme support:
+  By default, we show the dark theme colors. 
+  In light mode, we switch to shiki-light variables.
+*/
+article pre code {
+  color: var(--shiki-dark);
+  background-color: transparent !important;
+}
+
+[data-theme="light"] article pre code {
+  color: var(--shiki-light);
 }
 
 article p > code, article li > code {
@@ -177,6 +191,7 @@ article p > code, article li > code {
   border-radius: 4px;
   font-size: 0.85rem;
   font-family: var(--font-mono);
+  color: var(--color-body);
 }
 
 /* ─── Scrollbars ─────────────────────────────────────────── */
