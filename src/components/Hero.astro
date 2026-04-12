@@ -10,29 +10,33 @@ const mask = (s: string) => s.split('').map(c => c === ' ' ? ' ' : '·').join(''
 <section class="relative w-full bg-base border-b border-stroke overflow-hidden" style="height: 100dvh;">
   <AttractorCanvas />
 
-  <div class="absolute inset-0 z-10 flex flex-col justify-center" style="padding-left: clamp(2rem, 8vw, 9rem); padding-right: clamp(2rem, 8vw, 9rem); pointer-events: none;">
+  <div class="absolute inset-0 z-10 flex flex-col" style="padding-left: clamp(2rem, 8vw, 9rem); padding-right: clamp(2rem, 8vw, 9rem); padding-top: clamp(6rem, 15vh, 10rem); padding-bottom: clamp(3rem, 10vh, 5rem); pointer-events: none;">
     
-    <div class="label mb-8 opacity-0" id="hero-domain" style="letter-spacing: 0.15em; font-size: 0.68rem;">
+    <div class="label mb-auto opacity-0" id="hero-domain" style="letter-spacing: 0.15em; font-size: 0.68rem;">
       <!-- PLACEHOLDER: adjust domain labels to match owner's primary disciplines -->
       {domainLabel}
     </div>
 
-    <h1 class="serif-italic text-body flex flex-col items-start" style="font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1.08; letter-spacing: -0.02em; overflow-wrap: break-word; min-width: 0; margin-bottom: 2.5rem;" aria-label="Building systems at the edge of code and society.">
-      <!-- PLACEHOLDER: replace with owner's actual positioning statement -->
-      <span class="hero-line" data-text={headlineLine1}>{mask(headlineLine1)}</span>
-      <span class="hero-line" data-text={headlineLine2}>{mask(headlineLine2)}</span>
-      <span class="hero-line" data-text={headlineLine3}>{mask(headlineLine3)}</span>
-    </h1>
+    <div class="mb-auto">
+      <h1 class="serif-italic text-body flex flex-col items-start" style="font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1.08; letter-spacing: -0.02em; overflow-wrap: break-word; min-width: 0; margin-bottom: 0;" aria-label="Building systems at the edge of code and society.">
+        <!-- PLACEHOLDER: replace with owner's actual positioning statement -->
+        <span class="hero-line" data-text={headlineLine1}>{mask(headlineLine1)}</span>
+        <span class="hero-line" data-text={headlineLine2}>{mask(headlineLine2)}</span>
+        <span class="hero-line" data-text={headlineLine3}>{mask(headlineLine3)}</span>
+      </h1>
+    </div>
 
-    <p class="font-sans font-light text-subtle opacity-0" id="hero-subhead" style="font-size: 1.05rem; max-width: 44ch; line-height: 1.7; margin-bottom: 3rem;">
-      <!-- PLACEHOLDER: adjust availability and collaboration preferences -->
-      Available for engineering roles.<br/>
-      Open to research collaborations.
-    </p>
+    <div class="flex flex-col gap-8">
+      <p class="font-sans font-light text-subtle opacity-0" id="hero-subhead" style="font-size: 1.05rem; max-width: 44ch; line-height: 1.7;">
+        <!-- PLACEHOLDER: adjust availability and collaboration preferences -->
+        Available for engineering roles.<br/>
+        Open to research collaborations.
+      </p>
 
-    <div class="flex gap-4 opacity-0" id="hero-ctas" style="transform: translateY(10px); pointer-events: auto;">
-      <a href="mailto:hello@alnau.com" class="btn-primary">Get in touch</a>
-      <a href="/#work" class="btn-secondary">See my work ↓</a>
+      <div class="flex gap-4 opacity-0" id="hero-ctas" style="transform: translateY(10px); pointer-events: auto;">
+        <a href="mailto:hello@alnau.com" class="btn-primary">Get in touch</a>
+        <a href="/#work" class="btn-secondary">See my work ↓</a>
+      </div>
     </div>
   </div>
 </section>
