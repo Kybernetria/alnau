@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import ArticlesList from '../../../components/ArticlesList.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => data.draft !== true);
+  const tags = new Set<string>();
+  
+  articles.forEach(article => {
+    tags.add(article.data.tag.toLowerCase());
+  });
+  
+  return Array.from(tags).map(tag => ({
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+const allArticles = await getCollection('articles');
+const originalTag = allArticles.find(a => a.data.tag.toLowerCase() === tag)?.data.tag || tag;
+---
+
+<BaseLayout title={`${originalTag} — Augusta Lykke Nau`}>
+  <Navbar />
+  
+  <header class="container border-b border-stroke" style="padding-top: 10.5rem; padding-bottom: 3rem;">
+    <a href="/articles" class="mono text-subtle hover:text-prussian inline-block transition-colors" style="font-size: 0.8rem; margin-bottom: 1rem;">
+      ← Back to all writing
+    </a>
+    <h1 class="serif-italic text-body uppercase" style="font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1rem;">
+      {originalTag}
+    </h1>
+    <p class="font-sans font-light text-subtle" style="font-size: 1rem;">
+      Articles tagged with "{originalTag}"
+    </p>
+  </header>
+
+  <main class="w-full bg-base" style="padding-bottom: 5rem;">
+    <ArticlesList variant="default" showHeader={false} showFooter={false} filterTag={tag} />
+  </main>
+
+  <Footer />
+</BaseLayout>

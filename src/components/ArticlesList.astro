@@ -6,12 +6,18 @@ interface Props {
   variant?: 'default' | 'raised';
   showHeader?: boolean;
   showFooter?: boolean;
+  filterTag?: string;
 }
 
-const { limit = 0, variant = 'default', showHeader = true, showFooter = true } = Astro.props;
+const { limit = 0, variant = 'default', showHeader = true, showFooter = true, filterTag } = Astro.props;
 const isRaised = variant === 'raised';
+const showSearch = limit === 0;
 
-let allArticles = await getCollection('articles', ({ data }) => data.draft !== true);
+let allArticles = await getCollection('articles', ({ data }) => {
+  if (data.draft === true) return false;
+  if (filterTag && data.tag.toLowerCase() !== filterTag.toLowerCase()) return false;
+  return true;
+});
 allArticles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const articles = limit > 0 ? allArticles.slice(0, limit) : allArticles;
 
@@ -28,29 +34,97 @@ const bg = isRaised ? 'bg-raised' : 'bg-base';
   )}
 
   <div class="container">
-    <div class="flex flex-col w-full article-list">
+    {showSearch && (
+      <div class="mb-8 max-w-lg">
+        <label class="sr-only" for="article-search">Search articles</label>
+        <div class="relative">
+          <input 
+            type="text" 
+            id="article-search" 
+            placeholder="Search articles..."
+            class="w-full bg-base border border-stroke rounded-md px-4 py-2 pl-10 font-mono text-sm text-body placeholder:text-subtle focus:border-prussian focus:outline-none transition-colors"
+          />
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+    )}
+
+    <div class="flex flex-col w-full article-list" id="articles-grid">
       {articles.map((article) => (
-        <a href={`/articles/${article.id}/`} class="article-item group block w-full border-t border-stroke transition-colors duration-150" style="padding: 1.5rem 0;">
+        <article 
+          data-title={article.data.title.toLowerCase()}
+          data-excerpt={article.data.excerpt.toLowerCase()}
+          data-tag={article.data.tag.toLowerCase()}
+          data-date={article.data.date.toISOString().split('T')[0]}
+          class="article-item group block w-full border-t border-stroke transition-colors duration-150" 
+          style="padding: 1.5rem 0;"
+        >
           <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
             <span class="mono text-subtle" style="font-size: 0.7rem;">{formatDate(article.data.date)}</span>
-            <span class="mono text-subtle uppercase text-right" style="font-size: 0.65rem;">{article.data.tag}</span>
+            <a href={`/articles/tag/${article.data.tag.toLowerCase()}/`} class="mono text-subtle uppercase text-right hover:text-prussian transition-colors focus:outline-none focus:text-prussian" style="font-size: 0.65rem;" aria-label={`View articles tagged ${article.data.tag}`}>
+              {article.data.tag}
+            </a>
           </div>
-          <div class="flex items-center justify-between w-full">
-            <h3 class="serif-italic text-body flex-grow group-hover:underline group-hover:underline-offset-4 decoration-2 group-hover:decoration-prussian" style="font-size: 1.35rem;">{article.data.title}</h3>
-            <span class="text-body group-hover:text-prussian transition-all duration-150 group-hover:translate-x-1 ml-4" style="font-size: 1rem;">→</span>
-          </div>
-          <div class="font-sans font-light text-subtle max-w-prose line-clamp-2" style="margin-top: 0.5rem; font-size: 0.85rem;">
-            {article.data.excerpt}
-          </div>
-        </a>
+          <a href={`/articles/${article.id}/`} class="block w-full focus:outline-none">
+            <div class="flex items-center justify-between w-full">
+              <h3 class="serif-italic text-body flex-grow group-hover:underline group-hover:underline-offset-4 decoration-2 group-hover:decoration-prussian" style="font-size: 1.35rem;">{article.data.title}</h3>
+              <span class="text-body group-hover:text-prussian transition-all duration-150 group-hover:translate-x-1 ml-4" style="font-size: 1rem;">→</span>
+            </div>
+            <div class="font-sans font-light text-subtle max-w-prose line-clamp-2" style="margin-top: 0.5rem; font-size: 0.85rem;">
+              {article.data.excerpt}
+            </div>
+          </a>
+        </article>
       ))}
       {showFooter && (
-        <div class="border-t border-stroke w-full" style="padding: 1.5rem 0;">
+        <div class="border-t border-stroke w-full flex-shrink-0" style="padding: 1.5rem 0;">
           <a href="/articles" class="group font-sans text-body hover:text-prussian flex items-center w-fit transition-colors duration-150" style="font-size: 0.85rem;">
             View all articles <span class="ml-2 group-hover:translate-x-1 transition-transform duration-150">→</span>
           </a>
         </div>
       )}
     </div>
+    
+    <p id="no-results" class="hidden text-center font-sans text-subtle border-t border-stroke w-full" style="padding: 3rem 0;">
+      No articles match your search.
+    </p>
   </div>
 </section>
+
+{showSearch && (
+  <script>
+    const searchInput = document.getElementById('article-search') as HTMLInputElement;
+    const articlesGrid = document.getElementById('articles-grid');
+    const noResults = document.getElementById('no-results');
+
+    function filterArticles() {
+      if (!articlesGrid || !noResults) return;
+      
+      const searchTerm = searchInput?.value.toLowerCase() || '';
+      const articles = articlesGrid.querySelectorAll('article.article-item');
+      let visibleCount = 0;
+
+      articles.forEach((article) => {
+        const title = article.getAttribute('data-title') || '';
+        const excerpt = article.getAttribute('data-excerpt') || '';
+        const tag = article.getAttribute('data-tag') || '';
+        const date = article.getAttribute('data-date') || '';
+        
+        const matches = title.includes(searchTerm) || excerpt.includes(searchTerm) || tag.includes(searchTerm) || date.includes(searchTerm);
+        
+        if (matches) {
+          (article as HTMLElement).style.display = '';
+          visibleCount++;
+        } else {
+          (article as HTMLElement).style.display = 'none';
+        }
+      });
+
+      noResults.classList.toggle('hidden', visibleCount > 0);
+    }
+
+    searchInput?.addEventListener('input', filterArticles);
+  </script>
+)}
