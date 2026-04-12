@@ -1,5 +1,6 @@
 ---
 import AttractorCanvas from './AttractorCanvas.astro';
+import config from '../../site-config.json';
 
 const domainLabel = "CYBERNETICIAN · ENGINEER · AGENTIC BUILDER";
 const headlineLine1 = "Building systems";
@@ -34,7 +35,7 @@ const mask = (s: string) => s.split('').map(c => c === ' ' ? ' ' : '·').join(''
       </p>
 
       <div class="flex gap-4 opacity-0" id="hero-ctas" style="transform: translateY(10px); pointer-events: auto;">
-        <a href="mailto:hello@alnau.com" class="btn-primary">Get in touch</a>
+        <a href={`mailto:${config.email}`} class="btn-primary">Get in touch <span>→</span></a>
         <a href="/#work" class="btn-secondary">See my work ↓</a>
       </div>
     </div>

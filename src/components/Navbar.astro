@@ -13,7 +13,7 @@ const siteName = config.name || 'Augusta Lykke Nau';
         <span class="select-none text-subtle" style="opacity: 0.4;">·</span>
         <a href="/articles" class="hover:text-body transition-colors duration-150">Articles</a>
         <span class="select-none text-subtle" style="opacity: 0.4;">·</span>
-        <a href="mailto:hello@alnau.com" class="hover:text-body transition-colors duration-150">Contact</a>
+        <a href={`mailto:${config.email}`} class="hover:text-body transition-colors duration-150">Contact</a>
       </nav>
       <button id="theme-toggle" class="mono text-subtle hover:text-body transition-colors duration-150" style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--color-stroke); border-radius: 2px; padding: 0.2rem 0.5rem; cursor: pointer;">Light</button>
     </div>
@@ -29,7 +29,7 @@ const siteName = config.name || 'Augusta Lykke Nau';
     <nav class="flex flex-col gap-8 text-center">
       <a href="/#work" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Work</a>
       <a href="/articles" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Articles</a>
-      <a href="mailto:hello@alnau.com" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Contact</a>
+      <a href={`mailto:${config.email}`} class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Contact</a>
     </nav>
   </div>
 </header>
