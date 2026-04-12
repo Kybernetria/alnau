@@ -134,3 +134,27 @@ body::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ─── Markdown Tables ────────────────────────────────────── */
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+article th, article td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-stroke);
+}
+
+article th {
+  background-color: var(--color-raised);
+  font-weight: 500;
+  font-family: var(--font-sans);
+}
+
+article tr:nth-child(even) td {
+  background-color: var(--color-raised);
+}
