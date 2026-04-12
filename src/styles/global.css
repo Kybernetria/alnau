@@ -24,7 +24,7 @@
   --color-alt-stroke:  #D8D2CB;
 
   /* ─── Fonts ────────────────────────────────────────────── */
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'Caveat Variable', cursive;
   --font-sans:  'Inter', system-ui, sans-serif;
   --font-mono:  'IBM Plex Mono', monospace;
 }
@@ -83,7 +83,7 @@ body::after {
 .container { max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
 
 /* ─── Typography utilities ───────────────────────────────── */
-.serif-italic { font-family: var(--font-serif); font-style: italic; }
+.serif-italic { font-family: var(--font-serif); }
 .mono { font-family: var(--font-mono); letter-spacing: 0.04em; }
 .label {
   font-family: var(--font-mono);
