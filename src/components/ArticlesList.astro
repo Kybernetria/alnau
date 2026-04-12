@@ -15,7 +15,7 @@ const showSearch = limit === 0;
 
 let allArticles = await getCollection('articles', ({ data }) => {
   if (data.draft === true) return false;
-  if (filterTag && data.tag.toLowerCase() !== filterTag.toLowerCase()) return false;
+  if (filterTag && !data.tags.some(t => t.toLowerCase() === filterTag.toLowerCase())) return false;
   return true;
 });
 allArticles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -56,16 +56,20 @@ const bg = isRaised ? 'bg-raised' : 'bg-base';
         <article 
           data-title={article.data.title.toLowerCase()}
           data-excerpt={article.data.excerpt.toLowerCase()}
-          data-tag={article.data.tag.toLowerCase()}
+          data-tags={article.data.tags.join(',').toLowerCase()}
           data-date={article.data.date.toISOString().split('T')[0]}
           class="article-item group block w-full border-t border-stroke transition-colors duration-150" 
           style="padding: 1.5rem 0;"
         >
           <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
             <span class="mono text-subtle" style="font-size: 0.7rem;">{formatDate(article.data.date)}</span>
-            <a href={`/articles/tag/${article.data.tag.toLowerCase()}/`} class="mono text-subtle uppercase text-right hover:text-prussian transition-colors focus:outline-none focus:text-prussian" style="font-size: 0.65rem;" aria-label={`View articles tagged ${article.data.tag}`}>
-              {article.data.tag}
-            </a>
+            <div class="flex flex-wrap gap-2 justify-end">
+              {article.data.tags.map(tag => (
+                <a href={`/articles/tag/${tag.toLowerCase()}/`} class="mono text-subtle uppercase text-right hover:text-prussian transition-colors focus:outline-none focus:text-prussian" style="font-size: 0.65rem;" aria-label={`View articles tagged ${tag}`}>
+                  {tag}
+                </a>
+              ))}
+            </div>
           </div>
           <a href={`/articles/${article.id}/`} class="block w-full focus:outline-none">
             <div class="flex items-center justify-between w-full">
@@ -109,10 +113,10 @@ const bg = isRaised ? 'bg-raised' : 'bg-base';
       articles.forEach((article) => {
         const title = article.getAttribute('data-title') || '';
         const excerpt = article.getAttribute('data-excerpt') || '';
-        const tag = article.getAttribute('data-tag') || '';
+        const tags = article.getAttribute('data-tags') || '';
         const date = article.getAttribute('data-date') || '';
         
-        const matches = title.includes(searchTerm) || excerpt.includes(searchTerm) || tag.includes(searchTerm) || date.includes(searchTerm);
+        const matches = title.includes(searchTerm) || excerpt.includes(searchTerm) || tags.includes(searchTerm) || date.includes(searchTerm);
         
         if (matches) {
           (article as HTMLElement).style.display = '';

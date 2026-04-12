@@ -1,7 +1,7 @@
 ---
 title: "On Feedback Loops and Social Systems"
 date: 2025-01-12
-tag: "Cybernetics"
+tags: ["Cybernetics"]
 excerpt: "A short exploration of second-order cybernetics applied to contemporary institutional analysis."
 ---
 <!-- PLACEHOLDER: suggested content -->

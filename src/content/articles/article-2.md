@@ -1,7 +1,7 @@
 ---
 title: Yatra-Mesh
 date: 2026-04-12T22:00:00
-tag: Mesh Network
+tags: ["Mesh Network"]
 excerpt: Building a Mesh Network for Offline Communication at a Remote Festival
 ---
 

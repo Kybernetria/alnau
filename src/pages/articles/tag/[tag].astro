@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   const tags = new Set<string>();
   
   articles.forEach(article => {
-    tags.add(article.data.tag.toLowerCase());
+    article.data.tags.forEach(t => tags.add(t.toLowerCase()));
   });
   
   return Array.from(tags).map(tag => ({
@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const allArticles = await getCollection('articles');
-const originalTag = allArticles.find(a => a.data.tag.toLowerCase() === tag)?.data.tag || tag;
+const originalTag = allArticles.find(a => a.data.tags.some(t => t.toLowerCase() === tag))?.data.tags.find(t => t.toLowerCase() === tag) || tag;
 ---
 
 <BaseLayout title={`${originalTag} — Augusta Lykke Nau`}>
