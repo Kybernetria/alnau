@@ -1,7 +1,14 @@
 ---
+import { marked } from 'marked';
 import config from '../../site-config.json';
 const projects = config.projects || [];
 const socials = config.socials || { github: '#' };
+
+// Configure marked to be safe and simple for this context
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+});
 ---
 
 <section id="work" class="bg-base border-t border-stroke w-full" style="padding: 6rem 0;">
@@ -12,22 +19,28 @@ const socials = config.socials || { github: '#' };
   <div class="container">
     <div class="flex flex-col w-full project-list">
       {projects.map((project: any, i: number) => (
-        <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-item group block w-full border-t border-stroke transition-colors duration-150 hover:bg-raised" style="padding: 2rem 1.25rem; margin: 0 -1.25rem; width: calc(100% + 2.5rem);">
+        <div class="project-item group relative block w-full border-t border-stroke transition-colors duration-150 hover:bg-raised" style="padding: 2rem 1.25rem; margin: 0 -1.25rem; width: calc(100% + 2.5rem);">
           <div class="flex items-center justify-between w-full">
             <div class="flex items-baseline gap-4 flex-grow min-w-0">
               <span class="mono text-subtle shrink-0" style="font-size: 0.75rem; width: 3ch;">{(i + 1).toString().padStart(2, '0')}</span>
-              <span class="font-sans font-normal text-body group-hover:text-steel transition-colors duration-150" style="font-size: 1.1rem;">{project.title}</span>
+              <a href={project.url} target="_blank" rel="noopener noreferrer" class="font-sans font-normal text-body group-hover:text-steel transition-colors duration-150 after:absolute after:inset-0" style="font-size: 1.1rem;">
+                {project.title}
+              </a>
             </div>
-            <div class="flex items-center gap-4 shrink-0">
+            <div class="flex items-center gap-4 shrink-0 relative z-10 pointer-events-none">
               <span class="mono text-subtle uppercase border border-stroke hidden md:inline-block" style="font-size: 0.65rem; border-radius: 2px; padding: 0.2rem 0.5rem;">{project.domain}</span>
               <span class="text-body group-hover:text-steel transition-all duration-150 group-hover:translate-x-1" style="font-size: 1rem;">→</span>
             </div>
           </div>
-          <div class="flex justify-between w-full" style="margin-top: 0.75rem; padding-left: calc(1rem + 3ch);">
-            <span class="font-sans font-light text-subtle" style="font-size: 0.875rem;">{project.description}</span>
+          <div class="flex justify-between w-full relative z-10" style="margin-top: 0.75rem; padding-left: calc(1rem + 3ch);">
+            <div 
+              class="project-description font-sans font-light text-subtle prose-links:text-steel prose-links:underline prose-links:underline-offset-2 hover:prose-links:text-body transition-colors" 
+              style="font-size: 0.875rem;"
+              set:html={marked.parse(project.description)}
+            />
             <span class="mono text-subtle shrink-0" style="font-size: 0.7rem;">{project.year}</span>
           </div>
-        </a>
+        </div>
       ))}
       <div class="border-t border-stroke w-full" style="padding: 1.5rem 0;">
         <a href={socials.github} target="_blank" rel="noopener noreferrer" class="group flex items-center text-subtle hover:text-steel transition-colors duration-150 w-fit mono" style="font-size: 0.75rem;">
@@ -37,3 +50,21 @@ const socials = config.socials || { github: '#' };
     </div>
   </div>
 </section>
+
+<style is:global>
+  .project-description p {
+    margin: 0;
+    display: inline;
+  }
+  .project-description a {
+    position: relative;
+    z-index: 20;
+    color: var(--color-steel);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 150ms ease;
+  }
+  .project-description a:hover {
+    color: var(--color-body);
+  }
+</style>
