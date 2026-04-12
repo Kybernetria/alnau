@@ -1,8 +1,10 @@
 ---
 title: Yatra-Mesh
 date: 2026-04-12T22:00:00
-tags: ["Mesh Network"]
+tag: Mesh Networks
 excerpt: Building a Mesh Network for Offline Communication at a Remote Festival
+tags:
+  - Mesh Network
 ---
 
 # Building a Mesh Network for a Remote Festival (And What We Got Wrong)
@@ -10,6 +12,8 @@ excerpt: Building a Mesh Network for Offline Communication at a Remote Festival
 We spent weeks designing and building a communication infrastructure for [Yatra](https://www.yatrafestival.co.nz/), a festival held in a remote part of Takaka, New Zealand. My [spouse](https://www.linkedin.com/in/kainau/)  and I built most of it remotely together — she was on the ground in Takaka during the festival itself while I supported from home. Off-grid power, no reliable cell coverage, a crew of around 50 and over a thousand guests. The goal was a self-contained communication layer that worked without internet, built from off-the-shelf hardware and open protocols.
 
 The mesh was never deployed. This is the full writeup.
+
+![](/images/signal-2026-03-08-110023_004.jpeg)
 
 ***
 
