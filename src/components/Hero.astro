@@ -7,7 +7,7 @@ const headlineLine2 = "at the edge of";
 const headlineLine3 = "code and society.";
 const mask = (s: string) => s.split('').map(c => c === ' ' ? ' ' : '·').join('');
 ---
-<section class="relative w-full bg-base border-b border-stroke overflow-hidden" style="height: 100dvh;">
+<section id="hero-section" class="relative w-full bg-base border-b border-stroke overflow-hidden" style="height: 100svh; height: 100dvh;">
   <AttractorCanvas />
 
   <div class="absolute inset-0 z-10 flex flex-col" style="padding-left: clamp(2rem, 8vw, 9rem); padding-right: clamp(2rem, 8vw, 9rem); padding-top: clamp(6rem, 15vh, 10rem); padding-bottom: clamp(3rem, 10vh, 5rem); pointer-events: none;">
@@ -59,6 +59,13 @@ const mask = (s: string) => s.split('').map(c => c === ' ' ? ' ' : '·').join(''
   }
 
   function init() {
+    // Lock hero height to initial viewport size to prevent reflow when
+    // mobile browser chrome collapses/expands during scroll.
+    const hero = document.getElementById('hero-section');
+    if (hero && window.innerWidth < 768) {
+      hero.style.height = window.innerHeight + 'px';
+    }
+
     const domain = document.getElementById('hero-domain');
     if (domain) setTimeout(() => { domain.style.opacity = '1'; domain.style.transition = 'opacity 600ms ease'; }, 200);
     const lines = document.querySelectorAll('.hero-line') as NodeListOf<HTMLElement>;
