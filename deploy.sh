@@ -12,6 +12,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
+echo "📥  Syncing latest changes from CMS..."
+git pull origin main
+
 echo "🔨  Building site..."
 npm run build
 
