@@ -1,9 +1,9 @@
 ---
-title: Materialism in the Age of APIs
+title: The Rate of Change is Accelerating
 date: 2024-09-22
-tag: Research
-excerpt: Revisiting classic materialist interpretations through the lens of modern software architectures.
+tag: Cybernetics
+excerpt: A comment on the rapidly increasing complexity and development of the 21st century
 draft: false
 ---
 
-[Protocol Zero](/work/protocol-zero)
+hi
