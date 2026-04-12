@@ -24,9 +24,9 @@
   --color-alt-stroke:  #D8D2CB;
 
   /* ─── Fonts ────────────────────────────────────────────── */
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans:  'DM Sans', system-ui, sans-serif;
-  --font-mono:  'DM Mono', monospace;
+  --font-serif: 'Fraunces Variable', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+  --font-mono:  'IBM Plex Mono', monospace;
 }
 
 /* ─── Light mode overrides ───────────────────────────────── */

@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import '@fontsource-variable/fraunces';
+import '@fontsource/inter';
+import '@fontsource/ibm-plex-mono';
 const { title = 'Augusta Lykke Nau', description = 'Cybernetician. Engineer. Researcher.' } = Astro.props;
 ---
 <html lang="en">
@@ -10,9 +13,6 @@ const { title = 'Augusta Lykke Nau', description = 'Cybernetician. Engineer. Res
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
     <script is:inline>
       (function() {
         var t = localStorage.getItem('theme');
