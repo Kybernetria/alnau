@@ -5,7 +5,7 @@ tag: Mesh Network
 excerpt: Building a Mesh Network for Offline Communication at a Remote Festival
 ---
 
-# vBuilding a Mesh Network for a Remote Festival (And What We Got Wrong)
+# Building a Mesh Network for a Remote Festival (And What We Got Wrong)
 
 ![](/images/signal-2026-03-08-110023_004.jpeg "Overview of the main stage at Yatra Festival")
 
