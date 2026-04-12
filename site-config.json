@@ -13,30 +13,21 @@
       "featured": true
     },
     {
-      "title": "Anthropo-Tech Survey",
-      "slug": "anthropo-tech",
-      "url": "https://github.com/Kybernetria/anthropo-tech",
-      "description": "Data collection and synthesis platform for ethnographic fieldwork.",
-      "domain": "ANTHROPOLOGY",
-      "year": "2023",
+      "title": "Day Progress tracker - Android Application",
+      "slug": "day-meter",
+      "url": "https://github.com/Kybernetria/day-meter",
+      "description": "A free android app that tracks how much time has passed in your day",
+      "domain": "Android App",
+      "year": "2026",
       "featured": true
     },
     {
-      "title": "Protocol Zero",
-      "slug": "protocol-zero",
-      "url": "https://github.com/Kybernetria/protocol-zero",
-      "description": "Minimalist peer-to-peer messaging protocol built in Go.",
-      "domain": "ENGINEERING",
-      "year": "2023",
-      "featured": true
-    },
-    {
-      "title": "Marxist Logic Engine",
-      "slug": "marxist-logic",
-      "url": "https://github.com/Kybernetria/marxist-logic",
-      "description": "Computational analysis of contradictions in contemporary socioeconomic datasets.",
-      "domain": "RESEARCH",
-      "year": "2022",
+      "title": "Yatra Mesh",
+      "slug": "yatra-mesh",
+      "url": "https://github.com/0cwa/Yatra-Mesh",
+      "description": "An event captive portal for a festival's decentralized mesh network using Reticulum",
+      "domain": "Website Development",
+      "year": "2025",
       "featured": true
     }
   ],
