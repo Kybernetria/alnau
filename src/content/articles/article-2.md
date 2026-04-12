@@ -192,4 +192,4 @@ We are already planning to go back next year. Earlier test run, proper site surv
 
 _The festival portal is live at_ [_yatrafestival.xyz_](https://yatrafestival.xyz/)_. The cgomesu B.A.T.M.A.N. guide linked above is a good starting point if you want to replicate any of this._
 
-_A note on process: alongside the hands-on work, we used AI tools — primarily Claude — fairly heavily throughout this project. For probing unfamiliar concepts, debugging config logic, understanding kernel interfaces, and thinking through network design decisions. We think that's worth being open about._
+_A note on process: alongside the hands-on work, we used AI tools fairly heavily throughout this project. For probing unfamiliar concepts, debugging config logic, understanding kernel interfaces, and thinking through network design decisions. We think that's worth being open about._
