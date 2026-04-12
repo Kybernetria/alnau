@@ -4,12 +4,12 @@
   "email": "Augusta@alnau.com",
   "projects": [
     {
-      "title": "Dynamic Systems Modeler",
-      "slug": "dynamic-systems",
-      "url": "https://github.com/Kybernetria/dynamic-systems",
-      "description": "A real-time visualization tool for coupled nonlinear differential equations.",
-      "domain": "CYBERNETICS",
-      "year": "2024",
+      "title": "Pi Protocol Extension",
+      "slug": "pi-protocol",
+      "url": "https://github.com/Kybernetria/pi-protocol",
+      "description": "Pi Protocol is a capability protocol layer built on top of [pi](https://pi.dev/)",
+      "domain": "Agentic AI",
+      "year": "2026",
       "featured": true
     },
     {
