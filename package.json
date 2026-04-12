@@ -12,8 +12,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@fontsource-variable/caveat": "^5.2.8",
     "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/instrument-serif": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.3",
