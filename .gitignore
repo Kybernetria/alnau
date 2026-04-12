@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# instructions & prompts
+ALNAU_BUILD_PROMPT.md
