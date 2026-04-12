@@ -1,0 +1,19 @@
+---
+import config from '../../../site-config.json';
+
+export async function getStaticPaths() {
+  const projects = config.projects || [];
+  return projects
+    .filter(p => p.slug)
+    .map(project => ({
+      params: { slug: project.slug },
+      props: { url: project.url },
+    }));
+}
+
+const { url } = Astro.props;
+
+// For static sites, Astro.redirect generates a redirect page 
+// with meta refresh and JS fallback during build.
+return Astro.redirect(url, 307);
+---
