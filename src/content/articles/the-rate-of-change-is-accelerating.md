@@ -1,9 +1,12 @@
 ---
 title: The Rate of Change is Accelerating
 date: 2024-09-22
-tags: ["Cybernetics", "Design"]
+tag: Cybernetics
 excerpt: A comment on the rapidly increasing complexity and development of the 21st century
 draft: false
+tags:
+  - Cybernetics
+  - Design
 ---
 
-hi
+# Article not finished yet
