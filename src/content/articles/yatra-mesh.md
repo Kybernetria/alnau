@@ -180,7 +180,7 @@ Reticulum and [Columba](https://github.com/torlando-tech/columba) still ran on t
 - No delivery receipts meant people had no confidence that a message had actually gotten through
 - You couldn't message someone you hadn't already discovered via the mesh — which made the initial add flow difficult when neither person understood the app yet
 
-When free WiFi was available, people defaulted to WhatsApp. Hard to compete with that when your app is still finding its feet. The data is useful though, and most of these are solvable problems.
+When free WiFi was available, people defaulted to WhatsApp. Hard to compete with that when your app is still finding its feet. The data is useful though, and most of these are solvable problems. Since then Columba has fixed many of these issues in part due to feedback from my spouse.
 
 ***
 
