@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Astro v6.1.3"><meta name="description" content="Cybernetician. Engineer. Researcher."><title>Yatra-Mesh — Augusta Lykke Nau</title><script>
+      (function() {
+        var t = localStorage.getItem('theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script><link rel="stylesheet" href="/_astro/Footer.D5hU8H8f.css">
+<style>.article-body{font-family:var(--font-sans);font-weight:300;line-height:1.65}.article-body p{margin-bottom:1.5em}.article-body h2{font-family:var(--font-serif);font-style:italic;margin-top:2.5em;margin-bottom:1em;font-size:2rem;color:var(--color-body);line-height:1.1}.article-body h3{font-family:var(--font-serif);font-style:italic;margin-top:2em;margin-bottom:.75em;font-size:1.5rem;color:var(--color-body);line-height:1.2}.article-body a{color:var(--color-body);text-decoration:underline;text-decoration-color:var(--color-prussian);text-underline-offset:3px;transition:color .15s ease}.article-body a:hover{color:var(--color-steel);text-decoration-color:var(--color-steel)}.article-body ul,.article-body ol{margin-bottom:1.5em;padding-left:1.5em}.article-body li{margin-bottom:.5em}.article-body blockquote{border-left:2px solid var(--color-stroke);padding-left:1.5em;margin:1.5em 0;color:var(--color-subtle);font-style:italic}
+</style></head> <body>  <header id="navbar" class="nav-backdrop fixed top-0 left-0 w-full z-50" style="height: 56px;"> <div class="container h-full flex justify-between items-center"> <a href="/" id="site-name" class="serif-italic text-body" style="font-size: 1.2rem;">Augusta Lykke Nau</a> <div class="hidden md:flex items-center" style="gap: 1.25rem;"> <nav class="flex items-center font-sans font-normal text-subtle" style="gap: 0.75rem; font-size: 0.95rem;"> <a href="/#work" class="hover:text-body transition-colors duration-150">Work</a> <span class="select-none text-subtle" style="opacity: 0.4;">·</span> <a href="/articles" class="hover:text-body transition-colors duration-150">Articles</a> <span class="select-none text-subtle" style="opacity: 0.4;">·</span> <a href="mailto:Augusta@alnau.com" class="hover:text-body transition-colors duration-150">Contact</a> </nav> <button id="theme-toggle" class="mono text-subtle hover:text-body transition-colors duration-150" style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--color-stroke); border-radius: 2px; padding: 0.2rem 0.5rem; cursor: pointer;">Light</button> </div> <div class="md:hidden flex items-center" style="gap: 1rem;"> <button id="theme-toggle-mobile" class="mono text-subtle" style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--color-stroke); border-radius: 2px; padding: 0.15rem 0.4rem; cursor: pointer;">☀</button> <button id="menu-btn" class="font-sans text-subtle" type="button" aria-controls="mobile-menu" aria-expanded="false" style="font-size: 0.95rem; background: none; border: none; cursor: pointer;">
+Menu
+</button> </div> </div> </header> <div id="mobile-menu" class="fixed inset-0 flex flex-col justify-center items-center bg-base md:hidden" aria-hidden="true" style="z-index: 60; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 250ms ease, visibility 250ms ease; min-height: 100vh; min-height: 100svh; min-height: 100dvh; padding: calc(env(safe-area-inset-top, 0px) + 1.5rem) calc(env(safe-area-inset-right, 0px) + 1.5rem) calc(env(safe-area-inset-bottom, 0px) + 1.5rem) calc(env(safe-area-inset-left, 0px) + 1.5rem); overflow-y: auto; overscroll-behavior: contain;"> <button id="close-btn" class="absolute font-sans text-subtle" type="button" aria-label="Close menu" style="top: calc(env(safe-area-inset-top, 0px) + 1rem); right: calc(env(safe-area-inset-right, 0px) + 1rem); font-size: 0.95rem; background: none; border: none; cursor: pointer; padding: 0.5rem;">
+✕
+</button> <nav class="flex flex-col gap-8 text-center"> <a href="/#work" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Work</a> <a href="/articles" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Articles</a> <a href="mailto:Augusta@alnau.com" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Contact</a> </nav> </div> <script type="module">function r(){const d=document.getElementById("menu-btn"),c=document.getElementById("close-btn"),t=document.getElementById("mobile-menu"),s=document.querySelectorAll(".mobile-link"),g=document.documentElement,l=document.body;if(!d||!c||!t||!l)return;function i(e){t.style.opacity=e?"1":"0",t.style.visibility=e?"visible":"hidden",t.style.pointerEvents=e?"auto":"none",t.setAttribute("aria-hidden",e?"false":"true"),d.setAttribute("aria-expanded",e?"true":"false"),g.style.overflow=e?"hidden":"",l.style.overflow=e?"hidden":""}function E(){i(!0)}function o(){i(!1)}function f(e){e.key==="Escape"&&o()}function y(){window.innerWidth>=768&&o()}i(!1),d.addEventListener("click",E),c.addEventListener("click",o),s.forEach(e=>e.addEventListener("click",o)),document.addEventListener("keydown",f),window.addEventListener("resize",y);function m(){const e=document.documentElement.getAttribute("data-theme")||"dark",n=document.getElementById("theme-toggle"),a=document.getElementById("theme-toggle-mobile");n&&(n.textContent=e==="dark"?"Light":"Dark"),a&&(a.textContent=e==="dark"?"☀":"☽")}function u(){const n=(document.documentElement.getAttribute("data-theme")||"dark")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",n),localStorage.setItem("theme",n),m()}document.getElementById("theme-toggle")?.addEventListener("click",u),document.getElementById("theme-toggle-mobile")?.addEventListener("click",u),m()}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",r):r();</script> <main class="container min-h-screen" style="padding-top: 7rem; padding-bottom: 5rem;"> <article style="max-width: 65ch; margin: 0 auto;"> <header class="border-b border-stroke" style="margin-bottom: 4rem; padding-bottom: 2rem;"> <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;"> <span class="mono text-subtle" style="font-size: 0.7rem;">14 Apr 2026</span> <span class="label border border-stroke" style="border-radius: 2px; padding: 0.2rem 0.5rem;"></span> </div> <h1 class="serif-italic text-body" style="font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.01em; overflow-wrap: break-word;"> Yatra-Mesh </h1> </header> <div class="article-body text-body"> <h1 id="building-a-mesh-network-for-a-remote-festival-and-what-we-got-wrong">Building a Mesh Network for a Remote Festival (And What We Got Wrong)</h1>
+<p>We spent weeks designing and building a communication infrastructure for <a href="https://www.yatrafestival.co.nz/">Yatra</a>, a festival held in a remote part of Takaka, New Zealand. My <a href="https://www.linkedin.com/in/kainau/">spouse</a>  and I built most of it remotely together — she was on the ground in Takaka during the festival itself while I supported from home. Off-grid power, no reliable cell coverage, a crew of around 50 and over a thousand guests. The goal was a self-contained communication layer that worked without internet, built from off-the-shelf hardware and open protocols.</p>
+<p>The mesh was never deployed. This is the full writeup.</p>
+<p><img src="/images/signal-2026-03-08-110023_004.jpeg" alt=""></p>
+<hr>
+<h2 id="the-problem-we-were-trying-to-solve">The Problem We Were Trying to Solve</h2>
+<p>Remote festivals have a real communication problem. Takaka is genuinely remote — no cell coverage to begin with, and even where coverage exists at events like this, towers saturate fast when a thousand people arrive in the same field. Crew coordination falls apart. Information doesn’t travel. If you have an emergency at the far end of the site, getting the right people to the right place is harder than it should be.</p>
+<p>Our answer was to build a private mesh network covering most of the festival grounds, with Reticulum and <a href="https://github.com/torlando-tech/columba">Columba</a> running on top as an encrypted, decentralised messaging layer that guests and crew could use directly from their phones.</p>
+<p>The network had to handle:</p>
+<ul>
+<li>Crew coordination across physically separate areas of the site</li>
+<li>Vendor internet access for the market (card payments, etc.)</li>
+<li>Guest-facing WiFi with onboarding to the <a href="https://github.com/torlando-tech/columba">Columba</a> messaging app</li>
+<li>Long-range links to hard-to-reach areas using Wi-Fi HaLow</li>
+</ul>
+<hr>
+<h2 id="the-hardware">The Hardware</h2>
+<p>Three routers, two models, three distinct network roles:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Node</th><th>Hardware</th><th>Location</th><th>Role</th></tr></thead><tbody><tr><td>mesh-gw</td><td>Netgear R6800</td><td>HQ / Tech</td><td>Gateway, DHCP server, Starlink uplink</td></tr><tr><td>mesh-node2</td><td>Netgear R6800</td><td>Crowd / Stage area</td><td>Mesh node, client APs</td></tr><tr><td>mesh-market</td><td>Netgear R6100</td><td>Market</td><td>Ethernet-only node, market DHCP, rate limiting</td></tr></tbody></table>
+<p>The R6800 runs a MediaTek MT7603 (2.4GHz) and MT7615 (5GHz). The R6100 runs a Qualcomm QCA9880 (5GHz) and AR9340 (2.4GHz). Both are well-supported by OpenWRT.</p>
+<p>The R6100 has no 802.11s mesh capability on its chipset, so it was connected to the gateway via a 50m ethernet cable rather than a wireless backhaul link.</p>
+<p>For extended range we were building a fourth component: a Raspberry Pi 5 running a forked version of <a href="https://github.com/openmanet/openmanet">OpenMANET</a> with a Morse Micro HaLow module, designed to act as a bridge node. ESP32 boards with HaLow modules were intended as dumb access points at the far ends — no routing, just passing packets — covering areas 1-2km from the nearest router.</p>
+<hr>
+<h2 id="network-design">Network Design</h2>
+<p>The mesh backhaul ran on 5GHz (channel 149) using 802.11s with SAE encryption, hidden from client devices. The gateway ran B.A.T.M.A.N. V in server mode. Mesh nodes ran in client mode, with the gateway as the authoritative DHCP server for the guest network.</p>
+<p>Two VLANs over the batman-adv interface:</p>
+<p><strong>VLAN 10 — Guest network</strong></p>
+<ul>
+<li>Subnet: 192.168.12.0/22 (supports ~900 leases)</li>
+<li>DHCP served from gateway only</li>
+<li>No internet access, local mesh only</li>
+<li>Firewall blocks guest-to-market traffic</li>
+</ul>
+<p><strong>VLAN 20 — Market network</strong></p>
+<ul>
+<li>Subnet: 192.168.20.0/24</li>
+<li>DHCP served from R6100 (backup on gateway from .200 upward)</li>
+<li>Internet access via WAN with masquerade</li>
+<li>Rate limited to 6Mbps total using HTB + SFQ for fairness between vendors</li>
+</ul>
+<p>2.4GHz client channels were staggered across nodes to reduce co-channel interference: channel 1 on the gateway, channel 6 on node2, channel 11 on the R6100.</p>
+<p>A static route on the gateway pointed the HaLow subnet (10.41.0.0/16) to the Pi5’s IP once it picked up a DHCP lease on the guest network.</p>
+<hr>
+<h2 id="configuration-and-scripting">Configuration and Scripting</h2>
+<p>Each router was configured via a single shell script piped over SSH to a freshly flashed OpenWRT device. Using UCI commands in shell allowed the whole setup to be idempotent — run it again and it converges to the same state.</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plain"><code><span class="line"><span># Usage: ssh root@192.168.1.1 'sh -s' &#x3C; setup_gw.sh</span></span></code></pre>
+<p>The gateway script sets up the batman-adv interface in server mode, both VLANs, DHCP for each network, firewall zones, rate limiting, and a hotplug script that wires up the VLAN interfaces on bat0 as soon as the batman-adv device comes up:</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plain"><code><span class="line"><span># bat0 - batman-adv device, server mode since this is the gateway</span></span>
+<span class="line"><span>uci set network.bat0=interface</span></span>
+<span class="line"><span>uci set network.bat0.proto='batadv'</span></span>
+<span class="line"><span>uci set network.bat0.routing_algo='BATMAN_V'</span></span>
+<span class="line"><span>uci set network.bat0.gw_mode='server'</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># mesh0 - hardif linking phy1-mesh0 (5GHz wireless) to bat0</span></span>
+<span class="line"><span>uci set network.mesh0=interface</span></span>
+<span class="line"><span>uci set network.mesh0.proto='batadv_hardif'</span></span>
+<span class="line"><span>uci set network.mesh0.master='bat0'</span></span>
+<span class="line"><span>uci set network.mesh0.mtu='1536'</span></span></code></pre>
+<p>The guest network was sized for the full festival with a /22 giving ~900 usable addresses and 12h leases:</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plain"><code><span class="line"><span>uci set dhcp.guest.start='10'</span></span>
+<span class="line"><span>uci set dhcp.guest.limit='900'</span></span>
+<span class="line"><span>uci set dhcp.guest.leasetime='12h'</span></span></code></pre>
+<p>Rate limiting on the market VLAN used Linux Traffic Control with HTB for the total cap and SFQ for per-flow fairness. This ran as an init.d service starting after the network was up:</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plain"><code><span class="line"><span>tc qdisc add dev bat0.20 root handle 1: htb default 10</span></span>
+<span class="line"><span>tc class add dev bat0.20 parent 1: classid 1:1 htb rate 6mbit ceil 6mbit</span></span>
+<span class="line"><span>tc class add dev bat0.20 parent 1:1 classid 1:10 htb rate 6mbit ceil 6mbit</span></span>
+<span class="line"><span>tc qdisc add dev bat0.20 parent 1:10 handle 10: sfq perturb 10</span></span></code></pre>
+<p>Because batman-adv creates its virtual interface dynamically, the VLAN subinterfaces (bat0.10, bat0.20) had to be created via a hotplug script triggered when bat0 appeared:</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plain"><code><span class="line"><span>if [ "$ACTION" = "add" ] &#x26;&#x26; [ "$INTERFACE" = "bat0" ]; then</span></span>
+<span class="line"><span>    sleep 1</span></span>
+<span class="line"><span>    ip link add link bat0 name bat0.10 type vlan id 10 2>/dev/null</span></span>
+<span class="line"><span>    ip link set bat0.10 up 2>/dev/null</span></span>
+<span class="line"><span>    ip link add link bat0 name bat0.20 type vlan id 20 2>/dev/null</span></span>
+<span class="line"><span>    ip link set bat0.20 up 2>/dev/null</span></span>
+<span class="line"><span>    brctl addif br-guest bat0.10 2>/dev/null</span></span>
+<span class="line"><span>    brctl addif br-market bat0.20 2>/dev/null</span></span>
+<span class="line"><span>    batctl meshif bat0 multicast_forceflood 1</span></span>
+<span class="line"><span>fi</span></span></code></pre>
+<p>For a deeper walkthrough of OpenWRT and B.A.T.M.A.N. setup, <a href="https://cgomesu.com/blog/Mesh-networking-openwrt-batman/#batman-adv">this article by cgomesu</a> was one of the most useful references we found. Firmware was built using the <a href="https://firmware-selector.openwrt.org/">OpenWRT Firmware Selector</a> with batman-adv included at build time, and the project is on <a href="https://openwrt.org/">openwrt.org</a>.</p>
+<hr>
+<h2 id="the-halow-experiment">The HaLow Experiment</h2>
+<p>Wi-Fi HaLow (802.11ah) operates in sub-GHz frequencies, giving it significantly better range and wall penetration than conventional WiFi at the cost of throughput. For a festival site with hard-to-reach areas, 1-2km links at low data rates are more useful than 100m links at high ones.</p>
+<p>The plan was to run <a href="https://github.com/openmanet/openmanet">OpenMANET</a> on a Raspberry Pi 5 with a Morse Micro HaLow module. OpenMANET is a fork specifically targeting mesh networking with HaLow hardware. ESP32 boards with HaLow modules would act as dumb APs at the far ends — no routing capability, just extending the network into areas the main routers couldn’t reach.</p>
+<p>We never got it working. The blocker was a driver and firmware incompatibility between the Morse Micro module and the Pi 5. A lot of time went into reading through the OpenMANET source, trying to understand which kernel interfaces it expected and where the Pi 5’s newer hardware diverged from what the driver assumed. We ran out of time before resolving it. This is a solvable problem — just not one we solved before the festival.</p>
+<hr>
+<h2 id="the-captive-portal-and-onboarding">The Captive Portal and Onboarding</h2>
+<p>We built a captive portal using <a href="https://grapesjs.com/">Grape.js</a> as the visual editor, hosted at <a href="https://yatrafestival.xyz/">yatrafestival.xyz</a>. The portal served:</p>
+<ul>
+<li>Installation guide for <a href="https://github.com/torlando-tech/columba">Columba</a></li>
+<li>APK download for Android (sideloading, since it wasn’t on the Play Store)</li>
+<li>A live schedule for workshops and artists</li>
+<li>Basic onboarding instructions for the mesh</li>
+</ul>
+<p>The idea was that anyone connecting to the guest WiFi would land on this page first and be able to get set up without needing to find a crew member.</p>
+<hr>
+<h2 id="reticulum-and-columba">Reticulum and Columba</h2>
+<p>This side was handled primarily by my spouse. <a href="https://reticulum.network/">Reticulum</a> is a cryptography-based networking stack designed to work over a wide range of physical transports, including LoRa, serial links, Bluetooth, and conventional IP networks. <a href="https://github.com/torlando-tech/columba">Columba</a> is a messaging application built on top of it.</p>
+<p>The idea was that even if the WiFi mesh wasn’t reachable, Reticulum could route messages over Bluetooth between nearby phones, and over the internet via propagation nodes for anyone who had connectivity. The mesh network would just make it faster and more reliable for everyone on site.</p>
+<p>Reticulum did run during the festival. We learned a lot from watching real people interact with it.</p>
+<hr>
+<h2 id="what-actually-happened">What Actually Happened</h2>
+<p>The mesh was never deployed. We had assumed the festival site would have limited or no internet access. They had two Starlinks and a pair of powerful routers already running. We never validated that assumption with the on-site team before building for it, and by the time it was clear, the festival was already underway.</p>
+<p>Reticulum and <a href="https://github.com/torlando-tech/columba">Columba</a> still ran on the devices of people who had installed it, but adoption was low. The friction points became clear quickly:</p>
+<ul>
+<li>No autostart after a phone rebooted — by the next morning, anyone whose phone had died overnight was off the mesh</li>
+<li>Background Bluetooth was unreliable on older Android devices, likely due to the location permission requirements for nearby device scanning</li>
+<li>No delivery receipts meant people had no confidence that a message had actually gotten through</li>
+<li>You couldn’t message someone you hadn’t already discovered via the mesh — which made the initial add flow difficult when neither person understood the app yet</li>
+</ul>
+<p>When free WiFi was available, people defaulted to WhatsApp. Hard to compete with that when your app is still finding its feet. The data is useful though, and most of these are solvable problems. Since then Columba has fixed many of these issues in part due to feedback from my spouse.</p>
+<hr>
+<h2 id="learnings">Learnings</h2>
+<p>The assumption failure was the main one. We built the entire infrastructure around a constraint that didn’t exist. A single conversation with the on-site team earlier in the process would have changed the whole approach.</p>
+<p>The other thing this project surfaced clearly is how much UX matters for mesh and delay-tolerant networking apps. The technology works. The hard part is making it feel reliable enough that someone with no interest in the underlying protocol will trust it when they need to reach a friend across a field.</p>
+<p>We are already planning to go back next year. Earlier test run, proper site survey, and direct coordination with the on-site team from the start. The HaLow hardware problem is also something worth finishing.</p>
+<hr>
+<p><em>The festival portal is live at</em> <a href="https://yatrafestival.xyz/"><em>yatrafestival.xyz</em></a><em>. The cgomesu B.A.T.M.A.N. guide linked above is a good starting point if you want to replicate any of this.</em></p>
+<p><em>A note on process: alongside the hands-on work, we used AI tools fairly heavily throughout this project. For probing unfamiliar concepts, debugging config logic, understanding kernel interfaces, and thinking through network design decisions. We think that’s worth being open about.</em></p> </div> </article> </main> <footer class="bg-base border-t border-stroke mt-auto"> <div class="container border-b border-stroke" style="padding-top: 4.5rem; padding-bottom: 2.5rem;"> <div class="grid gap-12" style="grid-template-columns: 1fr; "> <div class="flex flex-col items-start"> <h2 class="serif-italic text-body" style="font-size: 1.1rem; margin-bottom: 0.25rem;">Augusta Lykke Nau</h2> <p class="font-sans font-light text-subtle" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Cybernetician. Engineer. Agentic Builder.</p> <a href="mailto:Augusta@alnau.com" class="btn-primary">Get in touch</a> </div> <div class="flex flex-row flex-wrap gap-x-6 gap-y-2"> <a href="https://kybernetria.com" target="_blank" rel="noopener" class="font-sans font-normal text-subtle hover:text-body transition-colors duration-150" style="font-size: 0.875rem;">
+Kybernetria.com ↗
+</a> <a href="https://github.com/Kybernetria" target="_blank" rel="noopener" class="font-sans font-normal text-subtle hover:text-body transition-colors duration-150" style="font-size: 0.875rem;">
+GitHub ↗
+</a> <a href="https://www.linkedin.com/in/augustalykkenau" target="_blank" rel="noopener" class="font-sans font-normal text-subtle hover:text-body transition-colors duration-150" style="font-size: 0.875rem;">
+LinkedIn ↗
+</a> </div> </div> </div> <div class="container" style="padding-top: 1.25rem; padding-bottom: 1.25rem;"> <div class="flex flex-wrap justify-between gap-x-4 gap-y-1 font-mono text-subtle" style="font-size: 0.7rem; letter-spacing: 0.04em;"> <span>© 2026 Augusta Lykke Nau</span> <span style="opacity: 0.6;">CC BY-NC-SA 4.0</span> <span>alnau.com</span> </div> </div> </footer>  </body></html>
