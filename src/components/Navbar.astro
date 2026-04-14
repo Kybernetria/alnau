@@ -6,7 +6,7 @@ const siteName = config.name || 'Augusta Lykke Nau';
 <header id="navbar" class="nav-backdrop fixed top-0 left-0 w-full z-50" style="height: 56px;">
   <div class="container h-full flex justify-between items-center">
     <a href="/" id="site-name" class="serif-italic text-body" style="font-size: 1.2rem;">{siteName}</a>
-    
+
     <div class="hidden md:flex items-center" style="gap: 1.25rem;">
       <nav class="flex items-center font-sans font-normal text-subtle" style="gap: 0.75rem; font-size: 0.95rem;">
         <a href="/#work" class="hover:text-body transition-colors duration-150">Work</a>
@@ -20,41 +20,94 @@ const siteName = config.name || 'Augusta Lykke Nau';
 
     <div class="md:hidden flex items-center" style="gap: 1rem;">
       <button id="theme-toggle-mobile" class="mono text-subtle" style="font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--color-stroke); border-radius: 2px; padding: 0.15rem 0.4rem; cursor: pointer;">☀</button>
-      <button id="menu-btn" class="font-sans text-subtle" style="font-size: 0.95rem; background: none; border: none; cursor: pointer;">Menu</button>
+      <button
+        id="menu-btn"
+        class="font-sans text-subtle"
+        type="button"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        style="font-size: 0.95rem; background: none; border: none; cursor: pointer;"
+      >
+        Menu
+      </button>
     </div>
-  </div>
-
-  <div id="mobile-menu" class="fixed inset-0 z-50 flex flex-col justify-center items-center bg-base" style="opacity: 0; pointer-events: none; transition: opacity 250ms ease;">
-    <button id="close-btn" class="absolute font-sans text-subtle" style="top: 1.5rem; right: 1.5rem; font-size: 0.95rem; background: none; border: none; cursor: pointer; padding: 0.5rem;">✕</button>
-    <nav class="flex flex-col gap-8 text-center">
-      <a href="/#work" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Work</a>
-      <a href="/articles" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Articles</a>
-      <a href={`mailto:${config.email}`} class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Contact</a>
-    </nav>
   </div>
 </header>
 
+<div
+  id="mobile-menu"
+  class="fixed inset-0 flex flex-col justify-center items-center bg-base md:hidden"
+  aria-hidden="true"
+  style="z-index: 60; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 250ms ease, visibility 250ms ease; min-height: 100vh; min-height: 100svh; min-height: 100dvh; padding: calc(env(safe-area-inset-top, 0px) + 1.5rem) calc(env(safe-area-inset-right, 0px) + 1.5rem) calc(env(safe-area-inset-bottom, 0px) + 1.5rem) calc(env(safe-area-inset-left, 0px) + 1.5rem); overflow-y: auto; overscroll-behavior: contain;"
+>
+  <button
+    id="close-btn"
+    class="absolute font-sans text-subtle"
+    type="button"
+    aria-label="Close menu"
+    style="top: calc(env(safe-area-inset-top, 0px) + 1rem); right: calc(env(safe-area-inset-right, 0px) + 1rem); font-size: 0.95rem; background: none; border: none; cursor: pointer; padding: 0.5rem;"
+  >
+    ✕
+  </button>
+  <nav class="flex flex-col gap-8 text-center">
+    <a href="/#work" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Work</a>
+    <a href="/articles" class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Articles</a>
+    <a href={`mailto:${config.email}`} class="mobile-link serif-italic text-body" style="font-size: 2.5rem;">Contact</a>
+  </nav>
+</div>
+
 <script>
   function initNavbar() {
-    // Mobile menu
     const menuBtn = document.getElementById('menu-btn');
     const closeBtn = document.getElementById('close-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
-    function openMenu() { if (mobileMenu) { mobileMenu.style.opacity = '1'; mobileMenu.style.pointerEvents = 'auto'; document.body.style.overflow = 'hidden'; } }
-    function closeMenu() { if (mobileMenu) { mobileMenu.style.opacity = '0'; mobileMenu.style.pointerEvents = 'none'; document.body.style.overflow = ''; } }
-    menuBtn?.addEventListener('click', openMenu);
-    closeBtn?.addEventListener('click', closeMenu);
-    mobileLinks.forEach(l => l.addEventListener('click', closeMenu));
+    const root = document.documentElement;
+    const body = document.body;
 
-    // Theme toggle
+    if (!menuBtn || !closeBtn || !mobileMenu || !body) return;
+
+    function setMenuState(isOpen) {
+      mobileMenu.style.opacity = isOpen ? '1' : '0';
+      mobileMenu.style.visibility = isOpen ? 'visible' : 'hidden';
+      mobileMenu.style.pointerEvents = isOpen ? 'auto' : 'none';
+      mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      root.style.overflow = isOpen ? 'hidden' : '';
+      body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    function openMenu() {
+      setMenuState(true);
+    }
+
+    function closeMenu() {
+      setMenuState(false);
+    }
+
+    function handleKeydown(event) {
+      if (event.key === 'Escape') closeMenu();
+    }
+
+    function handleResize() {
+      if (window.innerWidth >= 768) closeMenu();
+    }
+
+    setMenuState(false);
+    menuBtn.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    mobileLinks.forEach((link) => link.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', handleKeydown);
+    window.addEventListener('resize', handleResize);
+
     function updateToggleLabels() {
       const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      const db = document.getElementById('theme-toggle');
-      const mb = document.getElementById('theme-toggle-mobile');
-      if (db) db.textContent = theme === 'dark' ? 'Light' : 'Dark';
-      if (mb) mb.textContent = theme === 'dark' ? '☀' : '☽';
+      const desktopToggle = document.getElementById('theme-toggle');
+      const mobileToggle = document.getElementById('theme-toggle-mobile');
+      if (desktopToggle) desktopToggle.textContent = theme === 'dark' ? 'Light' : 'Dark';
+      if (mobileToggle) mobileToggle.textContent = theme === 'dark' ? '☀' : '☽';
     }
+
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme') || 'dark';
       const next = current === 'dark' ? 'light' : 'dark';
@@ -62,9 +115,15 @@ const siteName = config.name || 'Augusta Lykke Nau';
       localStorage.setItem('theme', next);
       updateToggleLabels();
     }
+
     document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
     document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
     updateToggleLabels();
   }
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initNavbar); } else { initNavbar(); }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavbar);
+  } else {
+    initNavbar();
+  }
 </script>
