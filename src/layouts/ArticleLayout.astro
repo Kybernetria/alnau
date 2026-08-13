@@ -11,6 +11,7 @@ const formattedDate = frontmatter.date
       year: "numeric",
     })
   : "";
+const displayTag = frontmatter.tag ?? frontmatter.tags?.[0] ?? "";
 ---
 
 <BaseLayout title={`${frontmatter.title} — Augusta Lykke Nau`}>
@@ -34,7 +35,7 @@ const formattedDate = frontmatter.date
           <span
             class="label border border-stroke"
             style="border-radius: 2px; padding: 0.2rem 0.5rem;"
-            >{frontmatter.tag}</span
+            >{displayTag}</span
           >
         </div>
         <h1

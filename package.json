@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "test:rendered": "npm run build && node scripts/test-rendered-output.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
